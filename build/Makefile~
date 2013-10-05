@@ -1,7 +1,7 @@
 #CC = arm-linux-gnueabi-g++-4.6
 #CFLAGS = -I/usr/arm-linux-gnueabi/include/c++/4.6.3 -L/usr/arm-linux-gnueabi/lib -g3 -Wall
 CC = g++
-#CFLAGS = -Wall -g3
+CFLAGS = -Wall -g3
 
 default: angstrom_avoid_obj
 	@echo Execulable located in bin
