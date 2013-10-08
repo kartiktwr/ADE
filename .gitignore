@@ -12,3 +12,9 @@
 *.la
 *.a
 
+#Vim/Editor swap files
+*.s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
