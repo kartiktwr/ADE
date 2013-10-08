@@ -1,13 +1,11 @@
 #CC = arm-linux-gnueabi-g++-4.6
 #CFLAGS = -I/usr/arm-linux-gnueabi/include/c++/4.6.3 -L/usr/arm-linux-gnueabi/lib -g3 -Wall
-CFLAGS = -I/home/kartik/Downloads/SDK/sysroots/armv5te-poky-linux-gnueabi/usr/include/c++ -L/home/kartik/Downloads/SDK/sysroots/armv5te-poky-linux-gnueabi/usr/lib -g3 -Wall
+CFLAGS = -I/opt/alphalem/0.1.0/sysroots/armv5te-poky-linux-gnueabi/usr/include/c++ -L/opt/alphalem/0.1.0/sysroots/armv5te-poky-linux-gnueabi/usr/lib -g3 -Wall
 
-PATH := /home/kartik/Downloads/SDK/sysroots/x86_64-pokysdk-linux/usr/bin:/home/kartik/Downloads/SDK/sysroots/x86_64-pokysdk-linux/usr/bin/armv5te-poky-linux-gnueabi:$(PATH)
+PATH := /opt/alphalem/0.1.0/sysroots/x86_64-pokysdk-linux/usr/bin:/opt/alphalem/0.1.0/sysroots/x86_64-pokysdk-linux/usr/bin/armv5te-poky-linux-gnueabi:$(PATH)
 
-#@echo $(PATH) 
 
 CC = arm-poky-linux-gnueabi-g++
-#CFLAGS = -Wall -g3 
 CV_CFLAGS = `pkg-config --cflags opencv`
 CV_LIBS = `pkg-config --libs opencv`
 
