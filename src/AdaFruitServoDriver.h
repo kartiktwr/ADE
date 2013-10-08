@@ -46,7 +46,6 @@ private:
 	int8_t readI2CByte(int8_t);
 	void writeI2CByte(int8_t, int8_t);
 	void servoControllerReset();
-	int I2CBeginTransmission(int8_t, char);
 
 public:
 	AdaFruitServoDriver(int);

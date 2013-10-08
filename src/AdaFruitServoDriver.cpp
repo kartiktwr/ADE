@@ -39,48 +39,15 @@ void AdaFruitServoDriver :: setPWMValue(int8_t num, int16_t pwmValue){
 	 * in auto incremented.
 	 */
 
-	int file;
 	int8_t startAddr = LED0_ON_L + 4 * num;
-	file = I2CBeginTransmission(I2CAddress, 'w');
-	int8_t buffer[5];
+	char buffer[5];
 
 	buffer[0] = startAddr;
 	buffer[1] = 0;
 	buffer[2] = 0;
 	buffer[3] = pwmValue;
 	buffer[4] = pwmValue >> 8;
-	if ( write(file, buffer, 5) != 5) {
-		cout << "Failure to write value to I2C Device address." << endl;
-	}
-	close(file);
-
-}
-
-int AdaFruitServoDriver :: I2CBeginTransmission(int8_t i2cAddr, char RW){
-
-	char name[MAX_BUS];
-	sprintf(name, "/dev/i2c-%d", I2CBus);
-	int file;
-	if ((file = open(name, O_RDWR)) < 0){
-		cout << "Failed to open Servo Driver on " << name << " I2C Bus" << endl;
-		return 0;
-	}
-
-	if (ioctl(file, I2C_SLAVE, i2cAddr) < 0){
-		cout << "I2C_SLAVE address " << I2CAddress << "failed..." << endl;
-		return 0;
-	}
-
-	if(RW == 'r'){
-		// to set read mode a HIGH bit has to be written
-		int8_t buf[1] = { 0x00 };
-		if(write(file, buf, 1) !=1){
-			cout << "Failed to set read mode" << endl;
-			return 0;
-		}
-		return file;
-	}
-	return file;
+	slave.accept(I2CBus, I2CAddress, buffer, 5);
 }
 
 void AdaFruitServoDriver :: initializeServoDriver(int freq){
