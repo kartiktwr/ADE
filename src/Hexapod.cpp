@@ -234,8 +234,8 @@ bool Hexapod :: DOF_Limits(){
 		float pwmValue = map((dir_rot[i] * angle[i] + home_value[i]), 0, 180, SERVOMIN, SERVOMAX);
 		// check for joints being within limits
 		if((pwmValue > SERVOMAX) || (pwmValue < SERVOMIN)){
-			  cout << "Joint No " << i + 1 << " is beyond its DOF limit." << endl;
-			  return false;
+				cout << "Joint No. " << i + 1 << " is beyond its DOF limit." << endl;
+				return false;
 		} // if statement end
 	} // foe loop end
 	return true;

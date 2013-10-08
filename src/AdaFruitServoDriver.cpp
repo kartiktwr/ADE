@@ -5,6 +5,7 @@
  *      Author: kartik
  */
 
+//#include <fcntl.h>
 #include "AdaFruitServoDriver.h"
 #include <iostream>
 
@@ -66,7 +67,7 @@ int AdaFruitServoDriver :: I2CBeginTransmission(int8_t i2cAddr, char RW){
 	}
 
 	if (ioctl(file, I2C_SLAVE, i2cAddr) < 0){
-		cout << "I2C_SLAVE address " << I2CAddress << " failed..." << endl;
+		cout << "I2C_SLAVE address " << I2CAddress << "failed..." << endl;
 		return 0;
 	}
 
@@ -74,7 +75,7 @@ int AdaFruitServoDriver :: I2CBeginTransmission(int8_t i2cAddr, char RW){
 		// to set read mode a HIGH bit has to be written
 		int8_t buf[1] = { 0x00 };
 		if(write(file, buf, 1) !=1){
-			cout << "Failed to set read mode " << endl;
+			cout << "Failed to set read mode" << endl;
 			return 0;
 		}
 		return file;

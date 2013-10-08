@@ -8,11 +8,13 @@
 #ifndef SLAVEDEVICE_H_
 #define SLAVEDEVICE_H_
 
-#include <stdio.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
+#include <stdio.h>
+#include <unistd.h>
+
 
 #define MAX_BUS 64
 

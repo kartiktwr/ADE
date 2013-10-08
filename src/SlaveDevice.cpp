@@ -23,7 +23,7 @@ void SlaveDevice :: reveal(int8_t I2CBus, int8_t I2CAddress, int numOfBytes, cha
 	beginCommunication(I2CBus, I2CAddress);
 	int8_t buf[1] = { 0x00 };
 	if(write(file, buf, 1) != 1){
-		cout << "Failed to set read mode " << endl;
+		cout << "Failed to set read mode" << endl;
 	}
 	if(read(file, data, numOfBytes) != numOfBytes){
 		cout << "Failed to read from the slave" << endl;
