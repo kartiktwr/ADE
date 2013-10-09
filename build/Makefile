@@ -10,10 +10,10 @@ CV_CFLAGS = `pkg-config --cflags opencv`
 CV_LIBS = `pkg-config --libs opencv`
 
 default: angstrom_avoid_obj
-	@echo Execulable located in bin
+	@echo Executable located in bin
 
 all: angstrom_avoid_obj videoStream
-	@echo Execulable located in bin
+	@echo Executable located in bin
 
 angstrom_avoid_obj: angstrom_avoid_obj.o Hexapod.o AdaFruitServoDriver.o SlaveDevice.o 
 	$(CC) $(CFLAGS) angstrom_avoid_obj.o Hexapod.o AdaFruitServoDriver.o SlaveDevice.o -o ../bin/angstrom_avoid_obj
@@ -26,6 +26,9 @@ Hexapod.o: ../src/Hexapod.cpp ../src/Hexapod.h
 
 AdaFruitServoDriver.o: ../src/AdaFruitServoDriver.cpp ../src/AdaFruitServoDriver.h
 	$(CC) $(CFLAGS) -c ../src/AdaFruitServoDriver.cpp
+
+Srf08.o: ../src/Srf08.cpp ../src/Srf08.h
+	$(CC) $(CFLAGS) -c ../src/Srf08.cpp
 
 Matrix.o: ../src/Matrix.cpp ../src/Matrix.h
 	$(CC) $(CFLAGS) -c ../src/Matrix.cpp
