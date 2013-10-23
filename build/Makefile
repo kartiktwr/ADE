@@ -7,19 +7,17 @@ CC = g++
 CROSS_CC = arm-poky-linux-gnueabi-g++
 CV_CFLAGS = -I/usr/local/include/opencv -I/usr/local/include/opencv2
 
-#CV_LIBS = `pkg-config --libs opencv` 
 CV_LIBS = /usr/local/lib/libopencv_calib3d.so /usr/local/lib/libopencv_contrib.so /usr/local/lib/libopencv_core.so /usr/local/lib/libopencv_features2d.so /usr/local/lib/libopencv_flann.so /usr/local/lib/libopencv_gpu.so /usr/local/lib/libopencv_highgui.so /usr/local/lib/libopencv_imgproc.so /usr/local/lib/libopencv_legacy.so /usr/local/lib/libopencv_ml.so /usr/local/lib/libopencv_nonfree.so /usr/local/lib/libopencv_objdetect.so /usr/local/lib/libopencv_photo.so /usr/local/lib/libopencv_stitching.so /usr/local/lib/libopencv_superres.so /usr/local/lib/libopencv_ts.so /usr/local/lib/libopencv_video.so /usr/local/lib/libopencv_videostab.so 
 
 default: angstrom_avoid_obj
 	@echo Executable located in bin
 
-<<<<<<< HEAD
+
 all: angstrom_avoid_obj videoStream facedetect
 	@echo Execulable located in bin
-=======
+
 all: angstrom_avoid_obj videoStream
 	@echo Executable located in bin
->>>>>>> 6103ae224145c0b9e3c282b0390b688cb64982e0
 
 facedetect: faceDetect.o
 	$(CC) $(CV_CFLAGS) $(CV_LIBS) faceDetect.o -o ../bin/faceDetect -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann
