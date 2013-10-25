@@ -13,11 +13,8 @@ default: angstrom_avoid_obj
 	@echo Executable located in bin
 
 
-all: angstrom_avoid_obj videoStream facedetect
+all: angstrom_avoid_obj facedetect
 	@echo Execulable located in bin
-
-all: angstrom_avoid_obj videoStream
-	@echo Executable located in bin
 
 facedetect: faceDetect.o
 	$(CC) $(CV_CFLAGS) $(CV_LIBS) faceDetect.o -o ../bin/faceDetect -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann
@@ -37,20 +34,11 @@ Hexapod.o: ../src/Hexapod.cpp ../src/Hexapod.h
 AdaFruitServoDriver.o: ../src/AdaFruitServoDriver.cpp ../src/AdaFruitServoDriver.h
 	$(CROSS_CC) $(CFLAGS) -c ../src/AdaFruitServoDriver.cpp
 
-Srf08.o: ../src/Srf08.cpp ../src/Srf08.h
-	$(CC) $(CFLAGS) -c ../src/Srf08.cpp
-
 Matrix.o: ../src/Matrix.cpp ../src/Matrix.h
 	$(CROSS_CC) $(CFLAGS) -c ../src/Matrix.cpp
 
 SlaveDevice.o: ../src/SlaveDevice.cpp ../src/SlaveDevice.h
 	$(CROSS_CC) $(CFLAGS) -c ../src/SlaveDevice.cpp
-
-videoStream: videoStream.o
-	$(CROSS_CC) $(CV_CFLAGS) $(CV_LIBS) videoStream.o -o ../bin/videoStream
-
-videoStream.o: ../src/videoStream.cpp
-	$(CROSS_CC) $(CV_CFLAGS) $(CV_LIBS) -c ../src/videoStream.cpp
 
 clean:
 	$(RM) *.o *~ ../bin/*
