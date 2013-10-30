@@ -8,13 +8,14 @@
 #include <iostream>
 #include "Hexapod.h"
 #include "SlaveDevice.h"
+#include "arm.h"
 
 
 using namespace std;
 
 
 int main(){
-	int8_t I2CAddress = 0x04, I2CBus = 2;
+/*	int8_t I2CAddress = 0x04, I2CBus = 2;
 	SlaveDevice slave;
 	Hexapod *robot = new Hexapod();
 	int sensorValue_us = 0;
@@ -30,6 +31,9 @@ int main(){
 			robot->walkFwd(1);
 	}
 	delete buffer;
-	delete robot;
+	delete robot;*/
+	arm gripper;
+	float pos[3] = {100, -10, 30};
+	gripper.goto_XYZ(pos, true);
 	return 0;
 }

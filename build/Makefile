@@ -22,11 +22,14 @@ facedetect: faceDetect.o
 faceDetect.o: ../src/faceDetect.cpp
 	$(CC) $(CV_LIBS) -c ../src/faceDetect.cpp
 
-angstrom_avoid_obj: angstrom_avoid_obj.o Hexapod.o AdaFruitServoDriver.o SlaveDevice.o 
-	$(CROSS_CC) $(CFLAGS) angstrom_avoid_obj.o Hexapod.o AdaFruitServoDriver.o SlaveDevice.o -o ../bin/angstrom_avoid_obj
+angstrom_avoid_obj: angstrom_avoid_obj.o Hexapod.o AdaFruitServoDriver.o SlaveDevice.o arm.o
+	$(CROSS_CC) $(CFLAGS) angstrom_avoid_obj.o Hexapod.o AdaFruitServoDriver.o SlaveDevice.o arm.o -o ../bin/angstrom_avoid_obj
 
 angstrom_avoid_obj.o: ../src/angstrom_avoid_obj.cpp
 	$(CROSS_CC) $(CFLAGS) -c ../src/angstrom_avoid_obj.cpp
+
+arm.o: ../src/arm.cpp
+	$(CROSS_CC) $(CFLAGS) -c ../src/arm.cpp
 
 Hexapod.o: ../src/Hexapod.cpp ../src/Hexapod.h
 	$(CROSS_CC) $(CFLAGS) -c ../src/Hexapod.cpp
