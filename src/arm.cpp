@@ -1,7 +1,4 @@
-//#include <iostream>
-//#include "SlaveDevice.h"
 #include "arm.h"
-//using namespace std;
 
 AdaFruitServoDriver *driver = new AdaFruitServoDriver(0x41, 2);
 
@@ -33,11 +30,14 @@ arm :: arm (){
 		driver -> setPWMValue(pinNo[i], pwmValue);
 		current_angle[i] = min_angle[i];
 	}
+	sleep(1);
 }
 
 void arm :: goto_XYZ (float pos[], bool grab){
 	float angle[3];
 	get_DOFs (pos, angle);
+	for(int i = 0; i < 3; i++)
+		cout << angle[i] << endl;
 	goto_position (angle, grab);
 }
 
@@ -51,13 +51,13 @@ void arm :: get_DOFs (float pos[], float angle[]){
 	float beta = atan((pos[2] - 6.2) / (G - 11)) * 180 / pi;
 	
 	float H = pow( (pow( (pos[2] - 6.2), 2 ) + pow( (G - 11), 2 ) ), (float) 0.5 );
-	float A = pow((pow(48, 2) + pow(34.6, 2)), (float) 0.5);
+	float A = pow((pow(50, 2) + pow(34.6, 2)), (float) 0.5);
 
-	angle[2] = (pow(A, 2) + pow(44.8, 2) - pow(H, 2)) / (2 * A * 44.8);
+	angle[2] = (pow(A, 2) + pow(46, 2) - pow(H, 2)) / (2 * A * 46);
 	angle[2] = acos(angle[2]) * 180 / pi;
 	angle[2] = 270 - angle[2] + offset[2];
 	
-	angle[1] = (pow(H, 2) + pow(44.8, 2) - pow(A, 2)) / (2 * H * 44.8);
+	angle[1] = (pow(H, 2) + pow(46, 2) - pow(A, 2)) / (2 * H * 46);
 	angle[1] = acos(angle[1]) * 180 / pi;
 	angle[1] = 90 + angle[1] + beta + offset[1];
 }
@@ -87,7 +87,7 @@ void arm :: goto_position (float angle[], bool grab){
 	if(grab){
 		for(int i = current_angle[3]; i < 120;){
 			int pwmValue = map(i, 0, 180, SERVOMIN_ARM, SERVOMAX_ARM);
-			driver -> setPWMValue(3, pwmValue);
+			driver -> setPWMValue(pinNo[3], pwmValue);
 			current_angle[3] = i;
 			i = i + INCREMENT_ARM;
 			usleep(DELAY * 1000);
@@ -97,7 +97,7 @@ void arm :: goto_position (float angle[], bool grab){
 	else{
 		for(int i = current_angle[3]; i > 30;){
 			int pwmValue = map(i, 0, 180, SERVOMIN_ARM, SERVOMAX_ARM);
-			driver -> setPWMValue(3, pwmValue);
+			driver -> setPWMValue(pinNo[3], pwmValue);
 			current_angle[3] = i;
 			i = i - INCREMENT_ARM;
 			usleep(DELAY * 1000);

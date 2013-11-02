@@ -33,7 +33,9 @@ int main(){
 	delete buffer;
 	delete robot;*/
 	arm gripper;
-	float pos[3] = {100, -10, 30};
-	gripper.goto_XYZ(pos, true);
+	float pos_grab[3] = {60, 20, -75};
+	gripper.goto_XYZ(pos_grab, true);
+	float pos_leave[3] = {80, -20, 10};
+	gripper.goto_XYZ(pos_leave, false);
 	return 0;
 }

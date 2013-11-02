@@ -4,7 +4,7 @@
 using namespace std;
 
 #define INCREMENT_ARM 2
-#define DELAY 50
+#define DELAY 20
 #define SERVOMIN_ARM 200
 #define SERVOMAX_ARM 630
 
