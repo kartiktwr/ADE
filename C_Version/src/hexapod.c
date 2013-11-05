@@ -10,9 +10,10 @@
 
 void init_hexapod(){
 
-	initializeServoDriver(60, DRIVER1, 2);
-	initializeServoDriver(60, DRIVER2, 2);
-
+//	initializeServoDriver(60, DRIVER1, 2);
+//	initializeServoDriver(60, DRIVER2, 2);
+	PI = 3.14;
+	
 	// initialization of angle of each leg's co-ordinate system
 	alpha[0] = 60;
 	alpha[1] = 0;
@@ -40,6 +41,7 @@ void init_hexapod(){
 	home_value[16] 	= HOME_17;
 	home_value[17] 	= HOME_18;
 
+	int i;
 	for(i = 0; i < 18; i++){
 		int pwmValue = 0, value = home_value[i];
 
@@ -52,10 +54,10 @@ void init_hexapod(){
 
 		pwmValue = map(value, 0, 180, SERVOMIN, SERVOMAX);
 		if(i < 9){
-			setPWMValue(DRIVER1, i, pwmValue);
+			setPWMValue(2, DRIVER1, i, pwmValue);
 		}
 		else{
-			setPWMValue(DRIVER2, (i - 9), pwmValue);
+			setPWMValue(2, DRIVER2, (i - 9), pwmValue);
 		}
 		// update the current value of the angle
 		if(i < 7 && i % 3 == 0)
@@ -78,7 +80,7 @@ void init_hexapod(){
 	usleep(1000 * 1000);
 	init_stand(); // initiate the standing position
 	for(i = 0; i < 18; i++)
-	stand[i] = des_angle[i];
+		stand[i] = des_angle[i];
 	moveToDOFValue();
 }
 
@@ -87,7 +89,7 @@ void moveToDOFValue(){
 	bool position_reached = false;
 
 	while(!position_reached){
-		int count = 0; //to exit the loop when destination is reached
+		int count = 0, i; //to exit the loop when destination is reached
 
 		for(i = 0; i < 18; i++){
 			int pwmValue = 0;
@@ -100,14 +102,13 @@ void moveToDOFValue(){
 
 				// calculate the corresponding pwm value
 				pwmValue = map((dir_rot[i] * angle[i] + home_value[i]), 0, 180, SERVOMIN, SERVOMAX);
-
 				if(DOF_Limits()){
 					if(i < 9){
-						setPWMValue(DRIVER1, i, pwmValue);
+						setPWMValue(2, DRIVER1, i, pwmValue);
 						usleep(DELAY2 * 1000);
 					} // if statement end
 					else{
-						setPWMValue(DRIVER2, (i - 9), pwmValue);
+						setPWMValue(2, DRIVER2, (i - 9), pwmValue);
 						usleep(DELAY2 * 1000);
 					} // else statement end
 					count++;
@@ -129,6 +130,7 @@ void moveToDOFValue(){
 } // function end
 
 void setDOFValues(int DOFValues[]){
+	int i;
 	for(i = 0; i < 18; i++){
 		des_angle[i] = DOFValues[i];
 	} // for loop end
@@ -165,7 +167,8 @@ void init_stand(){
 	currentPos[5][1] = 3.5;
 	currentPos[5][2] = -4.0;
 	get_DOF(currentPos[5], 6);
-
+	
+	int i;
 	for(i = 0; i < 18; i++)
 		stand[i] = des_angle[i];
 } // function end
@@ -173,6 +176,7 @@ void init_stand(){
 void get_DOF(float pos[3], int legNo){
 	float pos_origin[4];
 	// position vector
+	int i;
 	for(i = 0; i < 4; i++){
 		if(i < 3)
 		  pos_origin[i] = pos[i];
@@ -182,7 +186,7 @@ void get_DOF(float pos[3], int legNo){
 
 	//theta_3 = atan(X / Y)
 	float theta_3 = atan(pos_origin[0] / pos_origin[1]);
-	des_angle[3 * legNo - 1] = -1 * 180 * theta_3 / pi;
+	des_angle[3 * legNo - 1] = -1 * 180 * theta_3 / PI;
 
 	float pos_2[2];
 	pos_2[0] = pos_origin[2] - z_1_2;
@@ -192,7 +196,7 @@ void get_DOF(float pos[3], int legNo){
 	float H = pow(pos_2[0], 2) + pow(pos_2[1], 2);
 	H = pow(H, (float) 0.5);
 
-	float alpha = pi / 2;
+	float alpha = PI / 2;
 	alpha = alpha + atan(x_3_ee / y_3_ee);
 
 	float theta_1 = 0.0;
@@ -207,10 +211,10 @@ void get_DOF(float pos[3], int legNo){
 	float theta_2 = (pow(x_2_3, 2) + pow(H, 2) - pow(length1, 2)) / (2 * x_2_3 * H);
 	theta_2 = acos(theta_2);
 	theta_2 = theta_2 + beta;
-	theta_2 = (pi / 2) - theta_2;
+	theta_2 = (PI / 2) - theta_2;
 
-	des_angle[3 * legNo - 3] = 180 * theta_1 / pi;
-	des_angle[3 * legNo - 2] = 180 * theta_2 / pi;
+	des_angle[3 * legNo - 3] = 180 * theta_1 / PI;
+	des_angle[3 * legNo - 2] = 180 * theta_2 / PI;
 
 	// directions gets reversed for the right side of the robot
 	if(legNo > 3){
@@ -222,7 +226,7 @@ void get_DOF(float pos[3], int legNo){
 
 
 bool DOF_Limits(){
-
+	int i;
 	for(i = 0; i < 18; i++){
 		float pwmValue = map((dir_rot[i] * angle[i] + home_value[i]), 0, 180, SERVOMIN, SERVOMAX);
 		// check for joints being within limits
@@ -230,7 +234,7 @@ bool DOF_Limits(){
 			printf("Joint No. %i is beyond th DOF limit.\n", i+1);
 			return false;
 		} // if statement end
-	} // foe loop end
+	} // for loop end
 	return true;
 } // function end
 
@@ -255,6 +259,7 @@ void walkFwd(int numOfSteps){
 	}
 
 	leg_up(true, LEG_UP_HEIGHT);
+	int i;
 	for(i = 0; i < 18; i++)
 		stepFwd1[i] = des_angle[i];
 	moveToDOFValue();
@@ -311,6 +316,7 @@ void walkSide(int numOfSteps){
 	}
 
 	leg_up(true, LEG_UP_HEIGHT);
+	int i;
 	for(i = 0; i < 18; i++)
 		stepSide1[i] = des_angle[i];
 	moveToDOFValue();
@@ -367,6 +373,7 @@ void turn(int numOfSteps){
 	}
 
 	leg_up(true, LEG_UP_HEIGHT);
+	int i;
 	for(i = 0; i < 18; i++)
 		stepTurn1[i] = des_angle[i];
 	moveToDOFValue();
@@ -423,6 +430,7 @@ void walkCombined(float angle, int numOfSteps){
 	}
 
 	leg_up(true, LEG_UP_HEIGHT);
+	int i;
 	for(i = 0; i < 18; i++)
 		stepComb1[i] = des_angle[i];
 	moveToDOFValue();
@@ -471,6 +479,7 @@ void walkCombined(float angle, int numOfSteps){
 
 
 void leg_up(bool left_leg, float height){
+	int i;
 	if(left_leg){
 		for(i = 0; i < 3; i++){
 		  currentPos[2 * i][2] += height; 		// increment the current position of the end effector in z-axis
@@ -500,12 +509,12 @@ void leg_fwd(bool flag, float walkDistance){
 		int legNo = 0;
 		for(legNo = 0; legNo < 6; legNo++){
 			if(legNo == 0 || legNo == 2 || legNo == 3 || legNo == 5){
-				currentPos[legNo][0] -= walkDistance * cos(alpha[legNo] * pi / 180);
-				currentPos[legNo][1] += walkDistance * sin(alpha[legNo] * pi / 180);
+				currentPos[legNo][0] -= walkDistance * cos(alpha[legNo] * PI / 180);
+				currentPos[legNo][1] += walkDistance * sin(alpha[legNo] * PI / 180);
 			} // if statement end
 			else{
-				currentPos[legNo][0] += walkDistance * cos(alpha[legNo] * pi / 180);
-				currentPos[legNo][1] -= walkDistance * sin(alpha[legNo] * pi / 180);
+				currentPos[legNo][0] += walkDistance * cos(alpha[legNo] * PI / 180);
+				currentPos[legNo][1] -= walkDistance * sin(alpha[legNo] * PI / 180);
 			} // else statement end
 			if(legNo % 2 == 0)
 				currentPos[legNo][2] -= LEG_UP_HEIGHT;
@@ -516,12 +525,12 @@ void leg_fwd(bool flag, float walkDistance){
 		int legNo = 0;
 		for(legNo = 0; legNo < 6; legNo++){
 			if(legNo == 0 || legNo == 2 || legNo == 3 || legNo == 5){
-				currentPos[legNo][0] += walkDistance * cos(alpha[legNo] * pi / 180);
-				currentPos[legNo][1] -= walkDistance * sin(alpha[legNo] * pi / 180);
+				currentPos[legNo][0] += walkDistance * cos(alpha[legNo] * PI / 180);
+				currentPos[legNo][1] -= walkDistance * sin(alpha[legNo] * PI / 180);
 			} // if statement end
 			else{
-				currentPos[legNo][0] -= walkDistance * cos(alpha[legNo] * pi / 180);
-				currentPos[legNo][1] += walkDistance * sin(alpha[legNo] * pi / 180);
+				currentPos[legNo][0] -= walkDistance * cos(alpha[legNo] * PI / 180);
+				currentPos[legNo][1] += walkDistance * sin(alpha[legNo] * PI / 180);
 			} // else statement end
 			if(legNo % 2 != 0)
 				currentPos[legNo][2] -= LEG_UP_HEIGHT;
@@ -535,13 +544,13 @@ void leg_side(bool flag, float walkDistance){
 	int legNo = 0;
     for(legNo = 0; legNo < 6; legNo++){
       if(legNo % 2 == 0){
-        currentPos[legNo][0] += walkDistance * sin(alpha[legNo] * pi / 180);
-        currentPos[legNo][1] += walkDistance * cos(alpha[legNo] * pi / 180);
+        currentPos[legNo][0] += walkDistance * sin(alpha[legNo] * PI / 180);
+        currentPos[legNo][1] += walkDistance * cos(alpha[legNo] * PI / 180);
         currentPos[legNo][2] -= LEG_UP_HEIGHT;
       }
       else{
-        currentPos[legNo][0] -= walkDistance * sin(alpha[legNo] * pi / 180);
-        currentPos[legNo][1] -= walkDistance * cos(alpha[legNo] * pi / 180);
+        currentPos[legNo][0] -= walkDistance * sin(alpha[legNo] * PI / 180);
+        currentPos[legNo][1] -= walkDistance * cos(alpha[legNo] * PI / 180);
       }
       get_DOF(currentPos[legNo], legNo + 1);
     }
@@ -550,13 +559,13 @@ void leg_side(bool flag, float walkDistance){
 	int legNo = 0;
     for(legNo = 0; legNo < 6; legNo++){
       if(legNo % 2 == 0){
-        currentPos[legNo][0] -= walkDistance * sin(alpha[legNo] * pi / 180);
-        currentPos[legNo][1] -= walkDistance * cos(alpha[legNo] * pi / 180);
+        currentPos[legNo][0] -= walkDistance * sin(alpha[legNo] * PI / 180);
+        currentPos[legNo][1] -= walkDistance * cos(alpha[legNo] * PI / 180);
         get_DOF(currentPos[legNo], legNo + 1);
       }
       else{
-        currentPos[legNo][0] += walkDistance * sin(alpha[legNo] * pi / 180);
-        currentPos[legNo][1] += walkDistance * cos(alpha[legNo] * pi / 180);
+        currentPos[legNo][0] += walkDistance * sin(alpha[legNo] * PI / 180);
+        currentPos[legNo][1] += walkDistance * cos(alpha[legNo] * PI / 180);
         currentPos[legNo][2] -= LEG_UP_HEIGHT;
         get_DOF(currentPos[legNo], legNo + 1);
       }
@@ -574,10 +583,10 @@ void leg_turn(bool flag, float turnAngle){
 			float theta_final = 0;
 
 			if(legNo == 0 || legNo == 2 || legNo == 3 || legNo == 5){
-				theta_final = theta_current + (turnAngle * pi / 180);
+				theta_final = theta_current + (turnAngle * PI / 180);
 			}
 			else{
-				theta_final = theta_current - (turnAngle * pi / 180);
+				theta_final = theta_current - (turnAngle * PI / 180);
 			}
 
 			if(legNo % 2 == 0)
@@ -597,10 +606,10 @@ void leg_turn(bool flag, float turnAngle){
 			float theta_final = 0;
 
 			if(legNo == 1 || legNo == 4){
-				theta_final = theta_current + (turnAngle * pi / 180);
+				theta_final = theta_current + (turnAngle * PI / 180);
 			}
 			else{
-				theta_final = theta_current - (turnAngle * pi / 180);
+				theta_final = theta_current - (turnAngle * PI / 180);
 			}
 
 			if(legNo % 2 != 0)
@@ -614,7 +623,7 @@ void leg_turn(bool flag, float turnAngle){
 }
 
 void leg_comb(bool flag, float walkDistance, float angle){
-	angle = pi * angle / 180;
+	angle = PI * angle / 180;
 	leg_fwd(flag, (walkDistance * cos(angle)));
 	leg_up(flag, LEG_UP_HEIGHT);
 	leg_side(flag, (walkDistance * sin(angle)));
@@ -624,6 +633,7 @@ void reliefStep(){
 	bool left_leg = true;
 
 	// to reduce drag the legs have to do a relief procedure
+	int i;
 	for(i = 0; i < 2; i++){
 		leg_up(left_leg, LEG_UP_HEIGHT);
 		moveToDOFValue();

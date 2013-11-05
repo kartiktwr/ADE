@@ -3,7 +3,7 @@ CFLAGS = -I/opt/alphalem/0.1.0/sysroots/armv5te-poky-linux-gnueabi/usr/include/c
 
 PATH := /opt/alphalem/0.1.0/sysroots/x86_64-pokysdk-linux/usr/bin:/opt/alphalem/0.1.0/sysroots/x86_64-pokysdk-linux/usr/bin/armv5te-poky-linux-gnueabi:$(PATH)
 
-CC = g++
+CC = gcc
 CROSS_CC = arm-poky-linux-gnueabi-gcc
 CV_CFLAGS = -I/usr/local/include/opencv -I/usr/local/include/opencv2
 
@@ -13,22 +13,22 @@ default: toby
 	@echo Executable located in bin
 
 toby: toby.o hexapod.o adaFruitDriver.o slaveDevice.o
-	$(CROSS_CC) $(CFLAGS) toby.o hexapod.o adaFruitDriver.o slaveDevice.o -o ../bin/toby -lm
+	$(CC) toby.o hexapod.o adaFruitDriver.o slaveDevice.o -o ../bin/toby -lm
 
 toby.o: ../src/toby.c
-	$(CROSS_CC) $(CFLAGS) -c ../src/toby.c
+	$(CC) -c ../src/toby.c
 
 arm.o: ../src/arm.c
-	$(CROSS_CC) $(CFLAGS) -c ../src/arm.c ../src/arm.h
+	$(CC) $(CFLAGS) -c ../src/arm.c ../src/arm.h
 
 hexapod.o: ../src/hexapod.c ../src/hexapod.h
-	$(CROSS_CC) $(CFLAGS) -c ../src/hexapod.c ../src/hexapod.h
+	$(CC) -c ../src/hexapod.c ../src/hexapod.h
 
 adaFruitDriver.o: ../src/adaFruitDriver.c ../src/adaFruitDriver.h
-	$(CROSS_CC) $(CFLAGS) -c ../src/adaFruitDriver.c ../src/adaFruitDriver.h
+	$(CC) -c ../src/adaFruitDriver.c ../src/adaFruitDriver.h
 
 slaveDevice.o: ../src/slaveDevice.c ../src/slaveDevice.h
-	$(CROSS_CC) $(CFLAGS) -c ../src/slaveDevice.c ../src/slaveDevice.h
+	$(CC) -c ../src/slaveDevice.c ../src/slaveDevice.h
 
 clean:
 	$(RM) *.o *~ ../bin/*

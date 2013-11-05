@@ -11,7 +11,7 @@ void servoControllerReset(int8_t i2caddr) {
 	writeI2CByte(i2caddr, PCA9685_MODE1, 0x0);
 }
 
-void setPWMValue(int8_t i2caddr, int8_t num, int16_t pwmValue){
+void setPWMValue(int i2cBus, int8_t i2caddr, int8_t num, int16_t pwmValue){
 	/*
 	 * The sequence of data transfer is (if the control registers are in sequence):
 	 * 1: address of the first control register.
@@ -22,7 +22,8 @@ void setPWMValue(int8_t i2caddr, int8_t num, int16_t pwmValue){
 	 * Each register can have 1 byte of data and after each R/W operation the register
 	 * in auto incremented.
 	 */
-
+	I2CBus = i2cBus;
+	initializeServoDriver(60, i2caddr);
 	int8_t startAddr = LED0_ON_L + 4 * num;
 	char buffer[5];
 
@@ -34,8 +35,7 @@ void setPWMValue(int8_t i2caddr, int8_t num, int16_t pwmValue){
 	accept(I2CBus, i2caddr, buffer, 5);
 }
 
-void initializeServoDriver(int freq, int8_t i2caddr, int i2cBus){
-	I2CBus = i2cBus;
+void initializeServoDriver(int freq, int8_t i2caddr){
 	servoControllerReset(i2caddr);
 	/*
 	 * According to the data sheet the value of prescale and the EXTCTL are related (pg. 13)
@@ -71,9 +71,9 @@ void initializeServoDriver(int freq, int8_t i2caddr, int i2cBus){
 }
 
 int8_t readI2CByte(int8_t i2caddr, int8_t addr){
-	char *buffer = NULL;
-	reveal(I2CBus, i2caddr, 1, buffer);
-	return (int8_t)buffer[0];
+	char buffer;
+	reveal(I2CBus, i2caddr, 1, &buffer);
+	return (int8_t)buffer;
 }
 
 

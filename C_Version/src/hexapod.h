@@ -57,16 +57,16 @@
 
 #define THRESHOLD 3
 #define DELAY1 0 // for delay between steps
-#define DELAY2 2 // for delay between increments
+#define DELAY2 0 // for delay between increments
 
 // increments for different actions
 #define INCREMENT 3.0 		// increment for reaching a desired angle
 #define WALK_DISTANCE 1.5	// step length for each step in inches
 #define LEG_UP_HEIGHT 1.5	// value in inches of the height for leg up position
 
-//const float pi = 3.14;
+float PI;
 
-//int i = 0;		// counter
+//int j = 0;		// counter
 
 int alpha[6];	// this will contain rotation of the leg origin to abs origin
 				// different for different legs

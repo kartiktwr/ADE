@@ -36,15 +36,15 @@
 #define ALLLED_OFF_L 0xFC
 #define ALLLED_OFF_H 0xFD
 
-int i;						// counter for loops
+//int i;						// counter for loops
 int I2CBus;
 
 int8_t readI2CByte(int8_t, int8_t);
 void writeI2CByte(int8_t, int8_t, int8_t);
 void servoControllerReset(int8_t);
 
-void initializeServoDriver(int, int8_t, int);
-void setPWMValue(int8_t, int8_t, int16_t);
+void initializeServoDriver(int, int8_t);
+void setPWMValue(int, int8_t, int8_t, int16_t);
 
 
 #endif /* ADAFRUITDRIVER_H_ */
