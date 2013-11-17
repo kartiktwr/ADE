@@ -7,7 +7,6 @@ bool loop();
 
 
 int main(){
-	Setup();
 	bool flag = true;
 	flag = Setup();
 	

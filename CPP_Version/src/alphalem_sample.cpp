@@ -1,4 +1,4 @@
-#include "master.cpp"
+//#include "master.cpp"
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stdio.h>
 
+using namespace std;
 using namespace cv;
 
 /** Function Headers */
@@ -27,7 +28,6 @@ bool Setup(){
 	//-- 1. Load the cascades
 	if( !face_cascade.load( face_cascade_name ) ){ printf("--(!)Error loading\n"); return false; };
 	if( !eyes_cascade.load( eyes_cascade_name ) ){ printf("--(!)Error loading\n"); return false; };
-
 	//-- 2. Read the video stream
 	capture = cvCaptureFromCAM( 0 );
 	if(capture)
@@ -44,7 +44,8 @@ bool loop(){
 		int c = waitKey(10);
 		if( (char)c == 'c' )
 			return false;
-		return true;
+		else
+			return true;
 	}
 	else{
 		printf(" --(!) No captured frame -- Break!");
