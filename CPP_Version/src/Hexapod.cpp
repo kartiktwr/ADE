@@ -241,15 +241,6 @@ bool Hexapod :: DOF_Limits(){
 	return true;
 } // function end
 
-int Hexapod :: map (int var, int fromMin, int fromMax, int toMin, int toMax){
-
-	int value = 0;
-	int toDiff = 0, fromDiff = 0;
-	toDiff = toMax - toMin;
-	fromDiff = fromMax - fromMin;
-	value = (var * ((float)toDiff / (float)fromDiff));
-	return (toMin + value);
-}
 
 void Hexapod :: walkFwd(int numOfSteps){
 
@@ -632,6 +623,16 @@ void Hexapod :: reliefStep(){
 		moveToDOFValue();
 		left_leg = false;
 	}
+}
+
+int Hexapod :: map (int var, int fromMin, int fromMax, int toMin, int toMax){
+
+	int value = 0;
+	int toDiff = 0, fromDiff = 0;
+	toDiff = toMax - toMin;
+	fromDiff = fromMax - fromMin;
+	value = (var * ((float)toDiff / (float)fromDiff));
+	return (toMin + value);
 }
 
 Hexapod :: ~Hexapod(){

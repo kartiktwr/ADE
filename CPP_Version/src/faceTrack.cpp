@@ -4,6 +4,9 @@
 
  #include <iostream>
  #include <stdio.h>
+ #include "Hexapod.h"
+ #include "SlaveDevice.h"
+ #include "arm.h"
 
  using namespace std;
  using namespace cv;
@@ -16,15 +19,18 @@
  String eyes_cascade_name = "../haarcascade_eye_tree_eyeglasses.xml";
  CascadeClassifier face_cascade;
  CascadeClassifier eyes_cascade;
- string window_name = "Capture - Face detection";
+ //string window_name = "Capture - Face detection";
  RNG rng(12345);
- CvCapture* capture;
- Mat frame;
+ float pos[3] = {60, 0, -75};
 
  /** @function main */
  int main( int argc, const char** argv )
  {
-   
+   arm gripper;
+   gripper.goto_XYZ(pos, true);
+
+   CvCapture* capture;
+   Mat frame;
 
    //-- 1. Load the cascades
    if( !face_cascade.load( face_cascade_name ) ){ printf("--(!)Error loading\n"); return -1; };
@@ -36,10 +42,11 @@
    {
      while( true )
      {
-   	frame = cvQueryFrame( capture );
-   	//-- 3. Apply the classifier to the frame
+   frame = cvQueryFrame( capture );
+   //-- 3. Apply the classifier to the frame
           if( !frame.empty() )
-          { detectAndDisplay( frame ); }
+          { detectAndDisplay( frame );
+	     gripper.goto_XYZ(pos, true);}
           else
           { printf(" --(!) No captured frame -- Break!"); break; }
 
@@ -63,8 +70,9 @@
      face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30) );
 
      for( int i = 0; i < faces.size(); i++ )
-     {
-       Point center( faces[i].x + faces[i].width*0.5, faces[i].y + faces[i].height*0.5 );
+     {	pos[1] = (int)((float)faces[i].x * 25.0 / 107.0);
+	pos[2] = (int)((float)faces[i].y * 55.0 / 78.0);
+/*       Point center( faces[i].x + faces[i].width*0.5, faces[i].y + faces[i].height*0.5 );
        cout << "1: " << faces[i].x << " " << faces[i].y << endl;
        ellipse( frame, center, Size( faces[i].width*0.5, faces[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
 
@@ -82,5 +90,5 @@
         }
      }
      //-- Show what you got
-     imshow( window_name, frame );
+     imshow( window_name, frame );*/
     }

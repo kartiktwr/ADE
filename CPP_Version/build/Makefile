@@ -16,6 +16,12 @@ default: angstrom_avoid_obj
 all: angstrom_avoid_obj facedetect
 	@echo Execulable located in bin
 
+sample: alphalem_sample.o
+	$(CC) $(CV_CFLAGS) $(CV_LIBS) alphalem_sample.o -o ../bin/sample -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann
+
+alphalem_sample.o: ../src/alphalem_sample.cpp
+	$(CC) $(CV_LIBS) -c ../src/alphalem_sample.cpp
+
 facedetect: faceDetect.o
 	$(CC) $(CV_CFLAGS) $(CV_LIBS) faceDetect.o -o ../bin/faceDetect -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann
 

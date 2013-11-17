@@ -20,6 +20,10 @@
 
 #define MAX_BUS 64
 
+//Servo constants
+#define SERVOMIN 157
+#define SERVOMAX 627
+
 #define PCA9685_SUBADR1 0x2
 #define PCA9685_SUBADR2 0x3
 #define PCA9685_SUBADR3 0x4
@@ -46,6 +50,7 @@ private:
 	int8_t readI2CByte(int8_t);
 	void writeI2CByte(int8_t, int8_t);
 	void servoControllerReset();
+	int map(int, int, int, int, int);	// maps angle values from deg to pwm value
 
 public:
 	AdaFruitServoDriver(int);

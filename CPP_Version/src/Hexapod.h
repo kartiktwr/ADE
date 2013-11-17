@@ -23,10 +23,6 @@
 #define z_3_ee 0.0
 
 
-//Servo constants
-#define SERVOMIN 157
-#define SERVOMAX 627
-
 //home positions for each servo in terms of its abs rotation angle
 
 #define HOME_1 87
@@ -100,8 +96,7 @@ private:
 	void leg_side(bool, float);
 	void leg_comb(bool, float, float);
 	void leg_turn(bool, float);
-	int map(int, int, int, int, int);	// maps angle values from deg to pwm value
-
+	int map(int, int, int, int, int);
 public:
 	Hexapod();						// initialize the robot stance/position
 	void walkFwd(int);

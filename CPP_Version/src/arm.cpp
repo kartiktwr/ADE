@@ -55,7 +55,7 @@ void arm :: get_DOFs (float pos[], float angle[]){
 
 	angle[2] = (pow(A, 2) + pow(46, 2) - pow(H, 2)) / (2 * A * 46);
 	angle[2] = acos(angle[2]) * 180 / pi;
-	angle[2] = 270 - angle[2] + offset[2];
+	angle[2] = 180 - angle[2] + offset[2];
 	
 	angle[1] = (pow(H, 2) + pow(46, 2) - pow(A, 2)) / (2 * H * 46);
 	angle[1] = acos(angle[1]) * 180 / pi;
