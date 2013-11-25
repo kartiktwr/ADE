@@ -1,8 +1,6 @@
-
 bool Setup();
 
 bool loop();
-
 
 int main(){
 	bool flag = true;

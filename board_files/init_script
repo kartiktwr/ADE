@@ -1,4 +1,3 @@
 #!/bin/bash
 clear
-a=`rm *~`
-echo $a
+gedit sketch_template.cpp
