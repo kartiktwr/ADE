@@ -1,9 +1,14 @@
 
 CC = g++
 
-default: angstrom_avoid_obj
+default: send receive
 	@echo Executable located in bin
 
+send: ../src/message_send.cpp
+	$(CC) ../src/message_send.cpp -o ../bin/message_send
+
+receive: ../src/message_rec.cpp
+	$(CC) ../src/message_rec.cpp -o ../bin/message_rec
 
 all: angstrom_avoid_obj facedetect
 	@echo Execulable located in bin
