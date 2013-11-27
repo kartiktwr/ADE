@@ -4,13 +4,16 @@ CC = g++
 default: send receive
 	@echo Executable located in bin
 
-send: ../src/message_send.cpp
-	$(CC) ../src/message_send.cpp -o ../bin/message_send
+send: message_send.o rangeFinder.o SlaveDevice.o
+	$(CC) message_send.o rangeFinder.o SlaveDevice.o -o ../bin/message_send
 
 receive: ../src/message_rec.cpp
 	$(CC) ../src/message_rec.cpp -o ../bin/message_rec
 
-all: angstrom_avoid_obj facedetect
+message_send.o: ../src/message_send.cpp
+	$(CC) -c ../src/message_send.cpp
+
+all: angstrom_avoid_obj
 	@echo Execulable located in bin
 
 sample: alphalem_sample.o master.o
@@ -28,8 +31,11 @@ facedetect: faceDetect.o
 faceDetect.o: ../src/faceDetect.cpp
 	$(CC) -c ../src/faceDetect.cpp
 
-angstrom_avoid_obj: angstrom_avoid_obj.o Hexapod.o AdaFruitServoDriver.o SlaveDevice.o arm.o
-	$(CC) angstrom_avoid_obj.o Hexapod.o AdaFruitServoDriver.o SlaveDevice.o arm.o -o ../bin/angstrom_avoid_obj
+angstrom_avoid_obj: angstrom_avoid_obj.o rangeFinder.o SlaveDevice.o Hexapod.o AdaFruitServoDriver.o 
+	$(CC) angstrom_avoid_obj.o rangeFinder.o SlaveDevice.o Hexapod.o AdaFruitServoDriver.o -o ../bin/angstrom_avoid_obj
+
+rangeFinder.o: ../src/rangeFinder.cpp
+	$(CC) -c ../src/rangeFinder.cpp
 
 angstrom_avoid_obj.o: ../src/angstrom_avoid_obj.cpp
 	$(CC) -c ../src/angstrom_avoid_obj.cpp

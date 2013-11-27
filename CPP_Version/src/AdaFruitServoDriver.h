@@ -8,13 +8,9 @@
 #ifndef ADAFRUITSERVODRIVER_H_
 #define ADAFRUITSERVODRIVER_H_
 
-
-#include <linux/i2c.h>
-#include <linux/i2c-dev.h>
-#include <sys/ioctl.h>
+#include <iostream>
 #include <stdio.h>
 #include <math.h>
-#include <fcntl.h>
 
 #include "SlaveDevice.h"
 

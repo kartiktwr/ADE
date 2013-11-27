@@ -14,10 +14,9 @@ using namespace std;
 
 
 AdaFruitServoDriver *driver1 = new AdaFruitServoDriver(2);
-AdaFruitServoDriver *driver2 = new AdaFruitServoDriver(0x41, 2);
+AdaFruitServoDriver *driver2 = new AdaFruitServoDriver(2, 0x41);
 
 Hexapod :: Hexapod(){
-
 	prob = true;
 	if(!driver1 -> initializeServoDriver(60))
 		prob = false;
@@ -252,7 +251,7 @@ bool Hexapod :: DOF_Limits(){
 
 bool Hexapod :: walkFwd(int numOfSteps){
 
-	cout << "The Hexapod will walk " << numOfSteps << " steps" << endl;
+//	cout << "The Hexapod will walk " << numOfSteps << " steps" << endl;
 	prob = true;
 	int walk_dir = 1;
 	if(numOfSteps < 0){
@@ -304,7 +303,7 @@ bool Hexapod :: walkFwd(int numOfSteps){
 	}
 	init_stand();			// return to home position
 	prob = moveToDOFValue();
-	cout << "Done" << endl;
+//	cout << "Done" << endl;
 	return prob;
 }
 
@@ -476,6 +475,11 @@ bool Hexapod :: walkCombined(float angle, int numOfSteps){
 	init_stand();			// return to home position
 	prob = moveToDOFValue();
 	cout << "Done" << endl;
+}
+
+bool Hexapod :: move_single_leg(int legNo, float pos[]){
+	get_DOF(pos, legNo);
+	moveToDOFValue();
 }
 
 

@@ -3,6 +3,7 @@
 #include <sys/msg.h>
 #include <stdio.h>
 #include <string.h>
+#include "rangeFinder.h"
 
 #define MSGSZ     128
 
@@ -13,12 +14,13 @@
 
 class message_buf {
 public:
-         long    mtype;
-         char    mtext[MSGSZ];
-};
+         long mtype;
+         char mtext[MSGSZ];
+         };
 
 int main()
-{
+{	
+    rangeFinder *device = new rangeFinder(true);
     int msqid;
     int msgflg = IPC_CREAT | 0666;
     key_t key;
@@ -32,45 +34,22 @@ int main()
      */
     key = 1234;
 
-(void) fprintf(stderr, "\nmsgget: Calling msgget(%#lx,\
-%#o)\n",
-key, msgflg);
-
     if ((msqid = msgget(key, msgflg )) < 0) {
         perror("msgget");
         return 1;
     }
-    else 
-     (void) fprintf(stderr,"msgget: msgget succeeded: msqid = %d\n", msqid);
-
-
-    /*
-     * We'll send message type 1
-     */
-     
     sbuf.mtype = 1;
-    
-    (void) fprintf(stderr,"msgget: msgget succeeded: msqid = %d\n", msqid);
-    
-    (void) strcpy(sbuf.mtext, "Did you get this?");
-    
-    (void) fprintf(stderr,"msgget: msgget succeeded: msqid = %d\n", msqid);
-    
-    buf_length = strlen(sbuf.mtext) + 1 ;
-    
-    
-
-    /*
-     * Send a message.
-     */
-    if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
-       printf ("%d, %d, %s, %d\n", msqid, sbuf.mtype, sbuf.mtext, buf_length);
-        perror("msgsnd");
-        return 1;
+    for(int i = 0; i < 100; i++){ 
+    	int temp = device -> dist();
+    	sbuf.mtext[0] = temp;
+    	buf_length = 1;    
+    	if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
+       		printf ("%d, %d, %s, %d\n", msqid, sbuf.mtype, sbuf.mtext, buf_length);
+        	perror("msgsnd");
+        	return 1;
+    	}
     }
 
-   else 
-      printf("Message: \"%s\" Sent\n", sbuf.mtext);
-      
+    delete device;  
     return 0;
 }

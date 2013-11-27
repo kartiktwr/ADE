@@ -54,7 +54,7 @@ private:
 
 public:
 	AdaFruitServoDriver(int);
-	AdaFruitServoDriver(int8_t, int);
+	AdaFruitServoDriver(int, int8_t);
 	bool initializeServoDriver(int);
 	bool setPWMValue(int8_t, int16_t);
 	~AdaFruitServoDriver();

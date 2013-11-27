@@ -7,8 +7,11 @@
 
 #include <iostream>
 #include "SlaveDevice.h"
-
-bool SlaveDevice :: beginCommunication(int8_t I2CBus, int8_t I2CAddress){
+void SlaveDevice :: init_device(int i2cBus, int8_t i2caddr){
+	I2CBus = i2cBus;
+	I2CAddress = i2caddr;
+}
+bool SlaveDevice :: beginCommunication(){
 	char name[MAX_BUS];
 	sprintf(name, "/dev/i2c-%d", I2CBus);
 	if ((file = open(name, O_RDWR)) < 0){
@@ -22,10 +25,10 @@ bool SlaveDevice :: beginCommunication(int8_t I2CBus, int8_t I2CAddress){
 	return true;
 }
 
-bool SlaveDevice :: reveal(int8_t I2CBus, int8_t I2CAddress, int numOfBytes, char* data){
-	beginCommunication(I2CBus, I2CAddress);
-	int8_t buf[1] = { 0x00 };
-	if(write(file, buf, 1) != 1){
+bool SlaveDevice :: reveal(int8_t addr, int numOfBytes, char* data){
+	beginCommunication();
+	int8_t buffer[1] = { addr };
+	if(write(file, buffer, 1) != 1){
 		cout << "Failed to set read mode" << endl;
 		return false;
 	}
@@ -37,13 +40,17 @@ bool SlaveDevice :: reveal(int8_t I2CBus, int8_t I2CAddress, int numOfBytes, cha
 	return true;
 }
 
-bool SlaveDevice :: accept(int8_t I2CBus, int8_t I2CAddress, char data[], int size){
-	beginCommunication(I2CBus, I2CAddress);
+bool SlaveDevice :: accept(char *data, int size){
+	beginCommunication();
 	if(write(file, data, size) != size){
 		cout << "Failed to write to slave" << endl;
 		return false;
 	}
 	close(file);
 	return true;
+}
+
+void SlaveDevice :: endCommunication(){
+	close(file);
 }
 

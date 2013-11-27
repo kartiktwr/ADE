@@ -23,17 +23,13 @@ using namespace std;
 
 class SlaveDevice{
 private:
-//	int8_t I2CBus;
-//	int8_t I2CAddress;
 	int file;
 	void beginCommunication(int8_t, int8_t);
 
 public:
-//	SlaveDevice(int8_t, int8_t);
 	void reveal(int8_t, int8_t, int, char*);
 	void accept(int8_t, int8_t, char[], int);
 	void endCommunication();
-//	~SlaveDevice();
 };
 
 

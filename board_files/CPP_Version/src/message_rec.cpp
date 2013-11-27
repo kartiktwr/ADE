@@ -17,7 +17,7 @@ public:
 };
 
 
-main()
+int main()
 {
     int msqid;
     key_t key;
@@ -39,14 +39,12 @@ main()
     /*
      * Receive an answer of message type 1.
      */
-    if (msgrcv(msqid, &rbuf, MSGSZ, 1, 0) < 0) {
-        perror("msgrcv");
-        return 1;
+      for(int i = 0; i < 100; i++){
+	    if (msgrcv(msqid, &rbuf, MSGSZ, 1, 0) < 0) {
+	        perror("msgrcv");
+        	return 1;
+    	    }
+            printf("%i\n", rbuf.mtext[0]);
     }
-
-    /*
-     * Print the answer.
-     */
-    printf("%s\n", rbuf.mtext);
-    return 1;
+    return 0;
 }

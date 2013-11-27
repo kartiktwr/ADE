@@ -7,7 +7,6 @@
 
 //#include <fcntl.h>
 #include "AdaFruitServoDriver.h"
-#include <iostream>
 
 using namespace std;
 

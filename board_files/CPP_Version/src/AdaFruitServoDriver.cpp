@@ -13,12 +13,14 @@ using namespace std;
 AdaFruitServoDriver :: AdaFruitServoDriver(int i2cBus) {
 	I2CAddress = 0x40;
 	I2CBus = i2cBus;
+	slave.init_device(I2CBus, I2CAddress);
 	servoControllerReset();
 }
 
-AdaFruitServoDriver :: AdaFruitServoDriver(int8_t i2caddr, int i2cBus) {
+AdaFruitServoDriver :: AdaFruitServoDriver(int i2cBus, int8_t i2caddr) {
 	I2CAddress = i2caddr;
 	I2CBus = i2cBus;
+	slave.init_device(I2CBus,I2CAddress);
 	servoControllerReset();
 }
 
@@ -46,7 +48,7 @@ bool AdaFruitServoDriver :: setPWMValue(int8_t num, int16_t pwmValue){
 	buffer[2] = 0;
 	buffer[3] = pwmValue;
 	buffer[4] = pwmValue >> 8;
-	return slave.accept(I2CBus, I2CAddress, buffer, 5);
+	return slave.accept(buffer, 5);
 }
 
 bool AdaFruitServoDriver :: initializeServoDriver(int freq){
@@ -70,28 +72,31 @@ bool AdaFruitServoDriver :: initializeServoDriver(int freq){
 	 *
 	 * Bit 5 (AI) of MODE1 is put to HIGH to enable auto-increment mode
 	 */
-
 	int8_t oldmode = readI2CByte(PCA9685_MODE1);
 	int8_t newmode = (oldmode & 0x7F) | 0x10; 	// disable restart and switch oscillator off
-	if(!writeI2CByte(PCA9685_MODE1, newmode)) 		// go to sleep
+	if(!writeI2CByte(PCA9685_MODE1, newmode)){ 		// go to sleep
 		return false;
-	if(!writeI2CByte(PCA9685_PRESCALE, prescale)) 	// set the prescaler
+	}
+	if(!writeI2CByte(PCA9685_PRESCALE, prescale)){ 	// set the prescaler
 		return false;
-	if(!writeI2CByte(PCA9685_MODE1, oldmode))
+	}
+	if(!writeI2CByte(PCA9685_MODE1, oldmode)){
 		return false;
-
+	}
 	sleep(0.5);									// wait
 
-	if(!writeI2CByte(PCA9685_MODE1, oldmode | 0xa1)) // enable restart
+	if(!writeI2CByte(PCA9685_MODE1, oldmode | 0xa1)){ // enable restart
 		return false;
+	}
 	return true;
 
 }
 
 int8_t AdaFruitServoDriver :: readI2CByte(int8_t addr){
-	char *buffer = new char;
-	if(slave.reveal(I2CBus, I2CAddress, 1, buffer))
+	char buffer[1];
+	if(slave.reveal(addr, 1, buffer)){
 		return (int8_t)buffer[0];
+	}
 	return (int8_t)0;
 }
 
@@ -100,9 +105,8 @@ bool AdaFruitServoDriver :: writeI2CByte(int8_t regAddr, int8_t value){
 	char buffer[2];
 	buffer[0] = (char)regAddr;
 	buffer[1] = (char)value;
-	return slave.accept(I2CBus,I2CAddress, buffer, 2);
+	return slave.accept(buffer, 2);
 }
 
 AdaFruitServoDriver :: ~AdaFruitServoDriver(){
-
 }

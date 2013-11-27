@@ -109,6 +109,7 @@ public:
 	bool stancePitch(int);
 	bool stanceYaw(int);
 	bool reliefStep();					// relief step after each sequence of steps
+	bool move_single_leg(int, float[]);
 	~Hexapod();
 };
 
