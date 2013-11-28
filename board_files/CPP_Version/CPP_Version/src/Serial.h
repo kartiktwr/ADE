@@ -6,6 +6,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int kbhit(void);
+bool kbhit(void);
 
 #endif

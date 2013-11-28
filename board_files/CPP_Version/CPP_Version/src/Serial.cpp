@@ -1,6 +1,6 @@
 #include "Serial.h"
 
-int kbhit(void)
+bool kbhit(void)
 {
 	struct termios oldt, newt;
 	int ch;
@@ -21,9 +21,9 @@ int kbhit(void)
 	if(ch != EOF)
 	{
 		ungetc(ch, stdin);
-		return 1;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
