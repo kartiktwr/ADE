@@ -1,12 +1,12 @@
 
-bool Setup();
+bool setup();
 
 bool loop();
 
 
 int main(){
 	bool flag = true;
-	flag = Setup();
+	flag = setup();
 	
 	while(flag){
 		

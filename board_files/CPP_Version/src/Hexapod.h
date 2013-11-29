@@ -35,7 +35,7 @@
 #define HOME_8 127
 #define HOME_9 7
 #define HOME_10 93
-#define HOME_11 48
+#define HOME_11 50
 #define HOME_12 87
 #define HOME_13 100
 #define HOME_14 43
@@ -52,7 +52,7 @@
 #define INCREMENT 3.0 		// increment for reaching a desired angle
 #define WALK_DISTANCE 1.5	// step length for each step in inches
 #define LEG_UP_HEIGHT 1.5	// value in inches of the height for leg up position
-
+//#define HEIGHT -4.0
 const float pi = 3.14;
 
 class Hexapod{
@@ -87,10 +87,10 @@ private:
 	int stepComb4[18];
 
 	bool prob;
-
+	float HEIGHT;
+	void init_stand(float);
 	bool moveToDOFValue();				// go to the desired angle for a particular DOF
 	void setDOFValues(int[]);			// update the desired DOF values
-	void init_stand();					// set the DOF values to standing postion
 	void get_DOF(float[], int);			// IK solution for the given set of end effector position
 	bool DOF_Limits();					// DOF limit check
 	void leg_up(bool, float);			// set the DOF values to leg up position (alternate legs only)
@@ -101,6 +101,8 @@ private:
 	int map(int, int, int, int, int);
 public:
 	Hexapod();						// initialize the robot stance/position
+	void stand_pos(float);
+	void rise(float);
 	bool walkFwd(int);
 	bool walkSide(int);
 	bool turn(int);

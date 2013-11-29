@@ -30,21 +30,20 @@ int main()
      */
     key = 1234;
 
-    if ((msqid = msgget(key, 0666)) < 0) {
+    if ((msqid = msgget(key, IPC_CREAT | IPC_EXCL | 0666)) < 0) {
         perror("msgget");
-        return 1;
+//        return 1;
     }
 
     
     /*
      * Receive an answer of message type 1.
      */
-      for(int i = 0; i < 100; i++){
 	    if (msgrcv(msqid, &rbuf, MSGSZ, 1, 0) < 0) {
 	        perror("msgrcv");
         	return 1;
     	    }
             printf("%i\n", rbuf.mtext[0]);
-    }
+    msgctl(msqid, IPC_RMID, NULL);
     return 0;
 }

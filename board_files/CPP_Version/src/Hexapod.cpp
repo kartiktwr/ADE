@@ -17,6 +17,7 @@ AdaFruitServoDriver *driver1 = new AdaFruitServoDriver(2);
 AdaFruitServoDriver *driver2 = new AdaFruitServoDriver(2, 0x41);
 
 Hexapod :: Hexapod(){
+	HEIGHT = -4.0;
 	prob = true;
 	if(!driver1 -> initializeServoDriver(60))
 		prob = false;
@@ -87,7 +88,7 @@ Hexapod :: Hexapod(){
 			dir_rot[i] = 1;
 	}
 	usleep(1000 * 1000);
-	init_stand(); // initiate the standing position
+	init_stand(HEIGHT); // initiate the standing position
 	for(int i = 0; i < 18; i++)
 	stand[i] = des_angle[i];
 	moveToDOFValue();
@@ -148,36 +149,48 @@ void Hexapod :: setDOFValues(int DOFValues[]){
 	} // for loop end
 } // function end
 
-void Hexapod :: init_stand(){
+
+void Hexapod :: stand_pos (float height) {
+	init_stand(height);
+	prob = moveToDOFValue();
+
+}
+
+void Hexapod :: rise(float h) {
+	HEIGHT = -h;
+	stand_pos(HEIGHT);
+}
+
+void Hexapod :: init_stand(float height){
 
 	currentPos[0][0] = 2.0;
 	currentPos[0][1] = 3.5;
-	currentPos[0][2] = -4.0;
+	currentPos[0][2] = height;
 	get_DOF(currentPos[0], 1);
 
 	currentPos[1][0] = 0.0;
 	currentPos[1][1] = 3.5;
-	currentPos[1][2] = -4.0;
+	currentPos[1][2] = height;
 	get_DOF(currentPos[1], 2);
 
 	currentPos[2][0] = -2.0;
 	currentPos[2][1] = 3.5;
-	currentPos[2][2] = -4.0;
+	currentPos[2][2] = height;
 	get_DOF(currentPos[2], 3);
 
 	currentPos[3][0] = -2.0;
 	currentPos[3][1] = 3.5;
-	currentPos[3][2] = -4.0;
+	currentPos[3][2] = height;
 	get_DOF(currentPos[3], 4);
 
 	currentPos[4][0] = 0.0;
 	currentPos[4][1] = 3.5;
-	currentPos[4][2] = -4.0;
+	currentPos[4][2] = height;
 	get_DOF(currentPos[4], 5);
 
 	currentPos[5][0] = 2.0;
 	currentPos[5][1] = 3.5;
-	currentPos[5][2] = -4.0;
+	currentPos[5][2] = height;
 	get_DOF(currentPos[5], 6);
 
 	for(int i = 0; i < 18; i++)
@@ -301,7 +314,7 @@ bool Hexapod :: walkFwd(int numOfSteps){
 		prob = moveToDOFValue();
 		usleep(DELAY1 * 1000);
 	}
-	init_stand();			// return to home position
+	init_stand(HEIGHT);			// return to home position
 	prob = moveToDOFValue();
 //	cout << "Done" << endl;
 	return prob;
@@ -358,7 +371,7 @@ bool Hexapod :: walkSide(int numOfSteps){
 		prob = moveToDOFValue();
 		usleep(DELAY1 * 1000);
 	}
-	init_stand();			// return to home position
+	init_stand(HEIGHT);			// return to home position
 	prob = moveToDOFValue();
 	cout << "Done" << endl;
 	return prob;
@@ -415,7 +428,7 @@ bool Hexapod :: turn(int numOfSteps){
 		prob = moveToDOFValue();
 		usleep(DELAY1 * 1000);
 	}
-	init_stand();			// return to home position
+	init_stand(HEIGHT);			// return to home position
 	prob = moveToDOFValue();
 	cout << "Done" << endl;
 	return prob;
@@ -472,14 +485,14 @@ bool Hexapod :: walkCombined(float angle, int numOfSteps){
 		prob = moveToDOFValue();
 		usleep(DELAY1 * 1000);
 	}
-	init_stand();			// return to home position
+	init_stand(HEIGHT);			// return to home position
 	prob = moveToDOFValue();
 	cout << "Done" << endl;
 }
 
 bool Hexapod :: move_single_leg(int legNo, float pos[]){
 	get_DOF(pos, legNo);
-	moveToDOFValue();
+	prob = moveToDOFValue();
 }
 
 

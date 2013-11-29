@@ -7,11 +7,11 @@
 
 class rangeFinder{
 private:
-	float range;
+	int range;
 	SlaveDevice slave;
 public:
 	rangeFinder(bool);
-	float dist();
+	int dist();
 	~rangeFinder();
 };
 

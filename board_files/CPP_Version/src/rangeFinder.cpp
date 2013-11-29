@@ -14,7 +14,7 @@ rangeFinder :: rangeFinder(bool cm){
 	usleep(70 * 1000);
 }
 
-float rangeFinder :: dist(){
+int rangeFinder :: dist(){
 	char *buffer = new char;
 	slave.reveal((int8_t)0x02, 2, buffer);
 	range = ((int8_t) buffer[0]<< 8) + (int8_t) buffer[1];

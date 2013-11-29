@@ -15,21 +15,23 @@ using namespace std;
 
 int main(){
 	Hexapod *robot = new Hexapod();
-	while(true)
-		robot -> walkFwd(100);
-/*	robot -> reliefStep();
-	float pos[3] = {2.0, 5.0, 0.0};
-	robot -> move_single_leg(1, pos);
-	pos[0] = 1.0;
-	pos[1] = 6.0;
-	sleep(1);
-	robot -> move_single_leg(1, pos);*/
-//	delete robot;
-/*	rangeFinder *device = new rangeFinder(true);
-	while(true){
-		cout << device -> dist() << endl;
-		usleep(50 * 1000);
-	}
-	delete device;*/
+	sleep(7);
+/*	usleep(400 * 1000);
+	robot -> rise(6.0);
+	robot -> walkFwd(2.5);
+	robot -> rise(4.0);*/
+	robot -> walkFwd(5);
+	usleep(500 * 1000);
+	robot -> turn(-5);
+	robot -> reliefStep();
+	float pos[3] = {2.0, 3.5, 0.0}; 
+	robot -> move_single_leg(6, pos);
+	pos[0] += 2.5;
+	pos[1] += 2.5;
+	usleep(500 * 1000);
+	robot -> move_single_leg(6, pos);
+	usleep(500 * 1000);
+	robot -> stand_pos(-4.0);
+	delete robot;
 	return 0;
 }

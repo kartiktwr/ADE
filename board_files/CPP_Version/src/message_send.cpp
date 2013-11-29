@@ -20,9 +20,9 @@ public:
 
 int main()
 {	
-    rangeFinder *device = new rangeFinder(true);
+    rangeFinder device(true);
     int msqid;
-    int msgflg = IPC_CREAT | 0666;
+    int msgflg = 0666;
     key_t key;
     message_buf sbuf;
     size_t buf_length;
@@ -34,13 +34,12 @@ int main()
      */
     key = 1234;
 
-    if ((msqid = msgget(key, msgflg )) < 0) {
+    if ((msqid = msgget(key, msgflg)) < 0) {
         perror("msgget");
-        return 1;
+//        return 1;
     }
     sbuf.mtype = 1;
-    for(int i = 0; i < 100; i++){ 
-    	int temp = device -> dist();
+    	int temp = device.dist();
     	sbuf.mtext[0] = temp;
     	buf_length = 1;    
     	if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
@@ -48,8 +47,7 @@ int main()
         	perror("msgsnd");
         	return 1;
     	}
-    }
+//    msgctl(msqid, IPC_RMID, NULL);
 
-    delete device;  
     return 0;
 }

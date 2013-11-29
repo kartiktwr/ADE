@@ -1,7 +1,7 @@
 
 CC = g++
 
-default: send receive
+default: send receive sample 
 	@echo Executable located in bin
 
 send: message_send.o rangeFinder.o SlaveDevice.o
@@ -16,14 +16,28 @@ message_send.o: ../src/message_send.cpp
 all: angstrom_avoid_obj
 	@echo Execulable located in bin
 
-sample: alphalem_sample.o master.o
-	$(CC) alphalem_sample.o master.o -o ../bin/sample -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann
+sample: sample_pub sample_sub
 
-alphalem_sample.o: ../src/alphalem_sample.cpp
-	$(CC) -c ../src/alphalem_sample.cpp
+sample_pub: sample_pub.o master.o rangeFinder.o SlaveDevice.o pubsub.o Serial.o
+	$(CC) sample_pub.o master.o rangeFinder.o SlaveDevice.o pubsub.o Serial.o -o ../bin/sample_pub
+
+sample_sub: sample_sub.o master.o pubsub.o Serial.o
+	$(CC) sample_sub.o master.o pubsub.o Serial.o -o ../bin/sample_sub
+
+sample_sub.o: ../src/sample_sub.cpp
+	$(CC) -c ../src/sample_sub.cpp
+
+sample_pub.o: ../src/sample_pub.cpp
+	$(CC) -c ../src/sample_pub.cpp
 
 master.o: ../src/master.cpp
 	$(CC) -c ../src/master.cpp
+
+pubsub.o: ../src/pubsub.cpp
+	$(CC) -c ../src/pubsub.cpp
+
+Serial.o: ../src/Serial.cpp
+	$(CC) -c ../src/Serial.cpp
 
 facedetect: faceDetect.o
 	$(CC) faceDetect.o -o ../bin/faceDetect -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann
