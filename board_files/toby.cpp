@@ -1,8 +1,8 @@
 /*
- * I2CServoDriver.cpp
+ * toby.cpp
  *
- *  Created on: Aug 15, 2013
- *      Author: kartik
+ * This brings toby to life.
+ * Use it wisely.
  */
 
 #include <iostream>
@@ -11,6 +11,11 @@
 
 using namespace std;
 
+int main(){
+	//for vengeance
+	kick_the_mug();
+	return 0;
+}
 
 bool kick_the_mug(){
 	Hexapod *robot = new Hexapod();
@@ -29,12 +34,6 @@ bool kick_the_mug(){
 	robot -> stand_pos(-4.0);
 	delete robot;
 	return true;
-}
-
-int main() {
-	// For proper vengeance
-	kick_the mug();
-	return 0;
 }
 
 
