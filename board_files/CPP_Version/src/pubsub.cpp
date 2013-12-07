@@ -9,14 +9,14 @@ int initTransfer(key_t key) {
 	return msqid;
 }
 
-bool publish(int msqid, char* data) {
+bool publish(int msqid, char* data, int len) {
 	message_buf sbuf;
 	size_t buf_length;
 	
 	sbuf.mtype = 1;
-	for(int i = 0; i < sizeof(data); i++)
+	for(int i = 0; i < len; i++)
 		sbuf.mtext[i] = data[i];
-	buf_length = sizeof(data);    
+	buf_length = len;    
 	if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
 		printf ("%d, %d, %s, %d\n", msqid, sbuf.mtype, sbuf.mtext, buf_length);
 		perror("msgsnd");
@@ -27,7 +27,7 @@ bool publish(int msqid, char* data) {
 }
 
 bool subscribe(int msqid, char* data, int len) {
-	message_buf  rbuf;
+	message_buf rbuf;
 
 	if (msgrcv(msqid, &rbuf, MSGSZ, 1, 0) < 0) {
 		perror("msgrcv");

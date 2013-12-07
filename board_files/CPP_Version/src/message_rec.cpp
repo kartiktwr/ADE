@@ -2,9 +2,10 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <stdio.h>
+#include <iostream>
 
 #define MSGSZ     128
-
+using namespace std;
 
 /*
  * Declare the message structure.
@@ -35,15 +36,17 @@ int main()
 //        return 1;
     }
 
-    
+    cout << msqid << endl;    
     /*
      * Receive an answer of message type 1.
      */
-	    if (msgrcv(msqid, &rbuf, MSGSZ, 1, 0) < 0) {
-	        perror("msgrcv");
-        	return 1;
-    	    }
-            printf("%i\n", rbuf.mtext[0]);
+    for(int i = 0; i < 5; i++){
+    	if (msgrcv(msqid, &rbuf, MSGSZ, 1, 0) < 0) {
+        	perror("msgrcv");
+       		return 1;
+    	}
+        printf("%i\n", rbuf.mtext[0]);
+    }
     msgctl(msqid, IPC_RMID, NULL);
     return 0;
 }

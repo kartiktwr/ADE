@@ -1,24 +1,22 @@
-#include "rangeFinder.h"
 #include "pubsub.h"
 #include "Serial.h"
+#include <iostream>
 
-rangeFinder device(true);
-
+using namespace std;
 int msqid = 0;
 bool setup() {
 	msqid = initTransfer(1234);
+	cout << msqid << endl;
         if(msqid == 0)
                 return false;
         return true;
 }
 
-
+char *dist = new char;
 bool loop() {
-	char *dist = new char;
 	if (!kbhit()) {
-		dist[0] = device.dist();
-		usleep(500 * 1000);
-		return publish(msqid, dist);
+		dist[0] = (char)10;
+		return publish(msqid, dist, 1);
 	}
 	else{
 		endTransfer(msqid);

@@ -17,7 +17,7 @@ public:
 
 int initTransfer(key_t);
 
-bool publish(int, char*);
+bool publish(int, char*, int);
 
 bool subscribe(int, char*, int);
 

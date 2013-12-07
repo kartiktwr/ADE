@@ -3,10 +3,10 @@
 #include <sys/msg.h>
 #include <stdio.h>
 #include <string.h>
-#include "rangeFinder.h"
+#include <iostream>
 
 #define MSGSZ     128
-
+using namespace std;
 
 /*
  * Declare the message structure.
@@ -20,9 +20,8 @@ public:
 
 int main()
 {	
-    rangeFinder device(true);
     int msqid;
-    int msgflg = 0666;
+    int msgflg = IPC_CREAT|IPC_EXCL|0666;
     key_t key;
     message_buf sbuf;
     size_t buf_length;
@@ -35,19 +34,22 @@ int main()
     key = 1234;
 
     if ((msqid = msgget(key, msgflg)) < 0) {
-        perror("msgget");
+        msqid = msgget(key,0666);
 //        return 1;
-    }
-    sbuf.mtype = 1;
-    	int temp = device.dist();
-    	sbuf.mtext[0] = temp;
-    	buf_length = 1;    
-    	if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
-       		printf ("%d, %d, %s, %d\n", msqid, sbuf.mtype, sbuf.mtext, buf_length);
-        	perror("msgsnd");
-        	return 1;
-    	}
-//    msgctl(msqid, IPC_RMID, NULL);
+   }
+   cout << msqid << endl;
+   sbuf.mtype = 1;
+   
+   buf_length = 1;
+   sbuf.mtext[0] = (char)10;
+   for(int i = 0; i < 5; i++){
+   	if (msgsnd(msqid, &sbuf, buf_length, IPC_NOWAIT) < 0) {
+   		printf ("%d, %d, %s, %d\n", msqid, sbuf.mtype, sbuf.mtext, buf_length);
+	       	perror("msgsnd");
+       		return 1;
+	}
+   }
+//   msgctl(msqid, IPC_RMID, NULL);
 
-    return 0;
+   return 0;
 }
