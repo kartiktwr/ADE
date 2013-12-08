@@ -3,24 +3,23 @@
 #include <iostream>
 
 using namespace std;
-int msqid = 0;
+//int msqid = 0;
 bool setup() {
-	msqid = initTransfer(1234);
-	cout << msqid << endl;
+/*	msqid = initTransfer(1234);
         if(msqid == 0)
-                return false;
+                return false;*/
         return true;
 }
 
-char *dist = new char;
+char dist[1];
 bool loop() {
 	if (!kbhit()) {
-		dist[0] = (char)10;
-		return publish(msqid, dist, 1);
+		dist[0] = (char) 10;
+		return publish(dist, 1);
 	}
 	else{
-		endTransfer(msqid);
-		delete dist;
+		endTransfer();
+//		delete dist;
 		return false;
 	}
 }

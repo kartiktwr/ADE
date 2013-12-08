@@ -17,10 +17,10 @@ public:
 
 int initTransfer(key_t);
 
-bool publish(int, char*, int);
+bool publish(char*, int);
 
-bool subscribe(int, char*, int);
+bool subscribe(char*, int);
 
-bool endTransfer(int);
+bool endTransfer();
 
 #endif

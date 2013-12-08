@@ -7,33 +7,39 @@
 
 #include <iostream>
 #include "Hexapod.h"
-#include <unistd.h>
+#include "Serial.h"
 
 using namespace std;
-
-
-bool kick_the_mug(){
+int main(){
 	Hexapod *robot = new Hexapod();
-	sleep(7);
-	robot -> walkFwd(5);
-	usleep(500 * 1000);
-	robot -> turn(-5);
-	robot -> reliefStep();
-	float pos[3] = {2.0, 3.5, 0.0}; 
-	robot -> move_single_leg(6, pos);
-	pos[0] += 2.5;
-	pos[1] += 2.5;
-	usleep(500 * 1000);
-	robot -> move_single_leg(6, pos);
-	usleep(500 * 1000);
-	robot -> stand_pos(-4.0);
-	delete robot;
-	return true;
-}
-
-int main() {
-	// For proper vengeance
-	kick_the mug();
+	bool flag = true;
+	while(flag){
+	if(kbhit()){
+		char ch = getchar();
+		switch (ch){
+		case 65:
+			robot->walkFwd(1);
+			cout << 65;
+			break;
+		case 66:
+			robot->walkFwd(-1);
+			cout << 66;
+			break;
+		case 67:
+			robot->walkSide(1);
+			cout << 67;
+			break;
+		case 68:
+			robot->walkSide(-1);
+			cout << 68;
+			break;
+		case 27:
+			delete robot;
+			cout << "hi";
+			flag = false;
+		}
+	}
+	}
 	return 0;
 }
 
