@@ -16,7 +16,7 @@ using namespace std;
 AdaFruitServoDriver *driver1 = new AdaFruitServoDriver(2);
 AdaFruitServoDriver *driver2 = new AdaFruitServoDriver(2, 0x41);
 
-Hexapod :: Hexapod(){
+void Hexapod :: Hexapod_init(){
 	HEIGHT = -4.0;
 	prob = true;
 	if(!driver1 -> initializeServoDriver(60))

@@ -10,37 +10,39 @@
 #include "Serial.h"
 
 using namespace std;
-int main(){
-	Hexapod *robot = new Hexapod();
-	bool flag = true;
-	while(flag){
+
+Hexapod robot;
+bool setup() {
+	robot.Hexapod_init();
+	return true;
+}
+
+bool loop(){
 	if(kbhit()){
 		char ch = getchar();
 		switch (ch){
-		case 65:
-			robot->walkFwd(1);
-			cout << 65;
-			break;
-		case 66:
-			robot->walkFwd(-1);
-			cout << 66;
-			break;
-		case 67:
-			robot->walkSide(1);
-			cout << 67;
-			break;
-		case 68:
-			robot->walkSide(-1);
-			cout << 68;
-			break;
-		case 27:
-			delete robot;
-			cout << "hi";
-			flag = false;
+		case 'w':
+			robot.walkFwd(1);
+//			cout << 65;
+			return true;
+		case 's':
+			robot.walkFwd(-1);
+//			cout << 66;
+			return true;
+		case 'a':
+			robot.walkSide(1);
+//			cout << 67;
+			return true;
+		case 'd':
+			robot.walkSide(-1);
+//			cout << 68;
+			return true;
+		case 'c':
+			robot.reliefStep();
+//			delete robot;
+			return false;
 		}
 	}
-	}
-	return 0;
+	return true;
 }
-
 

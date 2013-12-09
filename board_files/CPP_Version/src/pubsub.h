@@ -6,6 +6,7 @@
 #include <sys/msg.h>
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 
 #define MSGSZ 128
 
@@ -17,10 +18,10 @@ public:
 
 int initTransfer(key_t);
 
-bool publish(char*, int);
+bool publish(int, char*, int);
 
-bool subscribe(char*, int);
+bool subscribe(int, char*, int);
 
-bool endTransfer();
+bool endTransfer(int);
 
 #endif

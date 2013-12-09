@@ -100,7 +100,7 @@ private:
 	void leg_turn(bool, float);
 	int map(int, int, int, int, int);
 public:
-	Hexapod();						// initialize the robot stance/position
+	void Hexapod_init();						// initialize the robot stance/position
 	void stand_pos(float);
 	void rise(float);
 	bool walkFwd(int);

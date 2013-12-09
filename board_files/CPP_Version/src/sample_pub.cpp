@@ -3,11 +3,12 @@
 #include <iostream>
 
 using namespace std;
-//int msqid = 0;
+int msqid = 0;
 bool setup() {
-/*	msqid = initTransfer(1234);
+	key_t key = 1234;
+	msqid = initTransfer(key);
         if(msqid == 0)
-                return false;*/
+                return false;
         return true;
 }
 
@@ -15,11 +16,10 @@ char dist[1];
 bool loop() {
 	if (!kbhit()) {
 		dist[0] = (char) 10;
-		return publish(dist, 1);
+		return publish(msqid, dist, 1);
 	}
 	else{
-		endTransfer();
-//		delete dist;
+		endTransfer(msqid);
 		return false;
 	}
 }
