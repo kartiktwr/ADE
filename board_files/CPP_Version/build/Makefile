@@ -13,7 +13,7 @@ receive: ../src/message_rec.cpp
 message_send.o: ../src/message_send.cpp
 	$(CC) -c ../src/message_send.cpp
 
-all: angstrom_avoid_obj
+all: angstrom_avoid_obj key_input
 	@echo Execulable located in bin
 
 sample: sample_pub sample_sub
@@ -45,8 +45,14 @@ facedetect: faceDetect.o
 faceDetect.o: ../src/faceDetect.cpp
 	$(CC) -c ../src/faceDetect.cpp
 
-angstrom_avoid_obj: Serial.o master.o angstrom_avoid_obj.o SlaveDevice.o Hexapod.o AdaFruitServoDriver.o 
-	$(CC) angstrom_avoid_obj.o master.o Serial.o SlaveDevice.o Hexapod.o AdaFruitServoDriver.o -o ../bin/angstrom_avoid_obj
+angstrom_avoid_obj: angstrom_avoid_obj.o pubsub.o Serial.o master.o SlaveDevice.o Hexapod.o AdaFruitServoDriver.o 
+	$(CC) angstrom_avoid_obj.o master.o pubsub.o Serial.o SlaveDevice.o Hexapod.o AdaFruitServoDriver.o -o ../bin/angstrom_avoid_obj
+
+key_input: key_input.o master.o Serial.o pubsub.o
+	$(CC) key_input.o pubsub.o master.o Serial.o -o ../bin/key_input
+
+key_input.o: ../src/key_input.cpp
+	$(CC) -c ../src/key_input.cpp
 
 rangeFinder.o: ../src/rangeFinder.cpp
 	$(CC) -c ../src/rangeFinder.cpp
