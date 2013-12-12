@@ -4,25 +4,20 @@
 
 using namespace std;
 
-int msqid = 0;
-
 bool setup() {
-	key_t key = 1234;
-	int msqid = initTransfer(key);
-	if(msqid == 0)
-		return false;
 	return true;
 }
 
 char data[1];
 bool loop() {
+	key_t key = 1234;
 //	if(!kbhit()){
-		bool flag = subscribe(msqid, data, 1);
+		bool flag = subscribe(key, data, 1);
 		cout << (int)data[0] << endl;
 		return flag;
 /*	}
 	else{
-		endTransfer(msqid);
+		endTransfer(key);
 		return false;
 	}*/
 }

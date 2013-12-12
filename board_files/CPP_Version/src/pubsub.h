@@ -16,12 +16,10 @@ public:
 	char mtext[MSGSZ];
 };
 
-int initTransfer(key_t);
+bool publish(key_t, char*, int);
 
-bool publish(int, char*, int);
+bool subscribe(key_t, char*, int);
 
-bool subscribe(int, char*, int);
-
-bool endTransfer(int);
+bool endTransfer(key_t);
 
 #endif

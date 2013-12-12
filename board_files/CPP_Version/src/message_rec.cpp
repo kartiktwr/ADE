@@ -45,7 +45,8 @@ int main()
         	perror("msgrcv");
        		return 1;
     	}
-        printf("%i\n", rbuf.mtext[0]);
+//        printf("%i\n", rbuf.mtext[0]);
+	cout << (int)rbuf.mtext[0] << endl;
     }
     msgctl(msqid, IPC_RMID, NULL);
     return 0;

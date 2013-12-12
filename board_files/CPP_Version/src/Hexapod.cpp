@@ -321,7 +321,7 @@ bool Hexapod :: walkFwd(int numOfSteps){
 }
 
 bool Hexapod :: walkSide(int numOfSteps){
-	cout << "The Hexapod will walk " << numOfSteps << " steps to the side" << endl;
+//	cout << "The Hexapod will walk " << numOfSteps << " steps to the side" << endl;
 	prob = true;
 	int walk_dir = 1;
 	if(numOfSteps < 0){
@@ -373,12 +373,12 @@ bool Hexapod :: walkSide(int numOfSteps){
 	}
 	init_stand(HEIGHT);			// return to home position
 	prob = moveToDOFValue();
-	cout << "Done" << endl;
+//	cout << "Done" << endl;
 	return prob;
 }
 
 bool Hexapod :: turn(int numOfSteps){
-	cout << "The Hexapod will turn " << numOfSteps << " steps" << endl;
+//	cout << "The Hexapod will turn " << numOfSteps << " steps" << endl;
 	prob = true;
 	int walk_dir = 1;
 	if(numOfSteps < 0){
@@ -430,12 +430,12 @@ bool Hexapod :: turn(int numOfSteps){
 	}
 	init_stand(HEIGHT);			// return to home position
 	prob = moveToDOFValue();
-	cout << "Done" << endl;
+//	cout << "Done" << endl;
 	return prob;
 }
 
 bool Hexapod :: walkCombined(float angle, int numOfSteps){
-	cout << "The Hexapod will walk " << numOfSteps << " steps diagonally" << endl;
+//	cout << "The Hexapod will walk " << numOfSteps << " steps diagonally" << endl;
 	prob = true;
 	int walk_dir = 1;
 	if(numOfSteps < 0){
@@ -487,7 +487,7 @@ bool Hexapod :: walkCombined(float angle, int numOfSteps){
 	}
 	init_stand(HEIGHT);			// return to home position
 	prob = moveToDOFValue();
-	cout << "Done" << endl;
+//	cout << "Done" << endl;
 }
 
 bool Hexapod :: move_single_leg(int legNo, float pos[]){

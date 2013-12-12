@@ -1,6 +1,6 @@
 #!/bin/bash
 #cd CPP_Version/bin/
-#./angstrom_avoid_obj
+#no./angstrom_avoid_obj
 
 echo "Choose from below mentioned options:"
 echo "1: Continue to prompt"
