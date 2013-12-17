@@ -1,34 +1,34 @@
 /*
- * AdaFruitServoDriver.cpp
+ * SRF08.cpp
  *
  *  Created on: Aug 16, 2013
  *      Author: kartik
  */
 
-#include "AdaFruitServoDriver.h"
+#include "SRF08.h"
 #include <iostream>
 
 using namespace std;
 
-AdaFruitServoDriver :: AdaFruitServoDriver(int i2cBus) {
+SRF08 :: SRF08(int i2cBus) {
 	I2CAddress = 0x40;
 	I2CBus = i2cBus;
 	slave.init_device(I2CBus, I2CAddress);
 	servoControllerReset();
 }
 
-AdaFruitServoDriver :: AdaFruitServoDriver(int i2cBus, int8_t i2caddr) {
+SRF08 :: SRF08(int i2cBus, int8_t i2caddr) {
 	I2CAddress = i2caddr;
 	I2CBus = i2cBus;
 	slave.init_device(I2CBus,I2CAddress);
 	servoControllerReset();
 }
 
-void AdaFruitServoDriver :: servoControllerReset() {
+void SRF08 :: servoControllerReset() {
 	writeI2CByte(PCA9685_MODE1, 0x0);
 }
 
-bool AdaFruitServoDriver :: setPWMValue(int8_t num, int16_t pwmValue){
+bool SRF08 :: setPWMValue(int8_t num, int16_t pwmValue){
 	/*
 	 * The sequence of data transfer is (if the control registers are in sequence):
 	 * 1: address of the first control register.
@@ -51,7 +51,7 @@ bool AdaFruitServoDriver :: setPWMValue(int8_t num, int16_t pwmValue){
 	return slave.accept(buffer, 5);
 }
 
-bool AdaFruitServoDriver :: initializeServoDriver(int freq){
+bool SRF08 :: initializeServoDriver(int freq){
 	/*
 	 * According to the data sheet the value of prescale and the EXTCTL are related (pg. 13)
 	 * Following calculation assumes the EXTCTL to be 25MHz (because the manufacturer used this
@@ -92,7 +92,7 @@ bool AdaFruitServoDriver :: initializeServoDriver(int freq){
 
 }
 
-int8_t AdaFruitServoDriver :: readI2CByte(int8_t addr){
+int8_t SRF08 :: readI2CByte(int8_t addr){
 	char buffer[1];
 	if(slave.reveal(addr, 1, buffer)){
 		return (int8_t)buffer[0];
@@ -101,12 +101,12 @@ int8_t AdaFruitServoDriver :: readI2CByte(int8_t addr){
 }
 
 
-bool AdaFruitServoDriver :: writeI2CByte(int8_t regAddr, int8_t value){
+bool SRF08 :: writeI2CByte(int8_t regAddr, int8_t value){
 	char buffer[2];
 	buffer[0] = (char)regAddr;
 	buffer[1] = (char)value;
 	return slave.accept(buffer, 2);
 }
 
-AdaFruitServoDriver :: ~AdaFruitServoDriver(){
+SRF08 :: ~SRF08(){
 }

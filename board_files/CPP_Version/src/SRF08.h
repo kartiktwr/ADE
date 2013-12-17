@@ -1,12 +1,12 @@
 /*
- * AdaFruitServoDriver.h
+ * SRF08.h
  *
  *  Created on: Aug 16, 2013
  *      Author: kartik
  */
 
-#ifndef ADAFRUITSERVODRIVER_H_
-#define ADAFRUITSERVODRIVER_H_
+#ifndef SRF08_H_
+#define SRF08_H_
 
 
 #include <linux/i2c.h>
@@ -41,7 +41,7 @@
 #define ALLLED_OFF_L 0xFC
 #define ALLLED_OFF_H 0xFD
 
-class AdaFruitServoDriver{
+class SRF08{
 
 private:
 	int8_t I2CAddress;
@@ -53,11 +53,11 @@ private:
 	int map(int, int, int, int, int);	// maps angle values from deg to pwm value
 
 public:
-	AdaFruitServoDriver(int);
-	AdaFruitServoDriver(int, int8_t);
+	SRF08(int);
+	SRF08(int, int8_t);
 	bool initializeServoDriver(int);
 	bool setPWMValue(int8_t, int16_t);
-	~AdaFruitServoDriver();
+	~SRF08();
 };
 
-#endif /* ADAFRUITSERVODRIVER_H_ */
+#endif /* SRF08_H_ */
