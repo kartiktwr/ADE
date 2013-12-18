@@ -3,6 +3,8 @@
  *
  *  Created on: Dec 17, 2013
  *      Author: Mike Lewis (mikelewis@alphalem.com)
+ *
+ *	Datasheet: https://secure.robotshop.com/media/files/pdf/datasheet-rob72212p.pdf
  */
 
 #include "Grove.h"
@@ -22,30 +24,37 @@ Grove :: Grove(int i2cBus, int8_t i2caddr) {
 	slave.init_device(I2CBus,I2CAddress);
 }
 
-// Returns the distance measurement buffer in raw form
-int8_t* Grove :: getRange(int8_t units) {
-	initRanging(units);
-
-	// This means that the sensor is "busy"
-	while (readI2CByte(COMMAND_REG) == 0xFF);
-
-	// For now, only returns the distance data in raw form (based on echos)
-	// TODO: extend the buffer to include all echos (1-17)
-	int8_t buf[2];
-	buf[0] = readI2CByte(ECHO_1_HI);
-	buf[1] = readI2CByte(ECHO_1_LO);
-	return buf;
+// Set motor speeds for both A & B at the same time
+// NOTE: Grove expects 2 values directly following the function address byte
+// i.e. 0x28 > 0x82 > 255 > 255
+void setPWMAB(int8_t speedA, int8_t speedB) {
+	writeI2CByte(PWM_REG, speedA);
+	writeI2CByte(PWM_REG, speedB);
 }
 
-// Returns the current light level as measured by the light sensor
-int8_t Grove :: getLight() {
-	return readI2CByte(LIGHT);
+// Sets frequency given a prescaler
+void setFreq(int8_t prescaler) {
+	writeI2CByte(FREQ_REG, prescaler);
+	writeI2CByte(FREQ_REG, 0);
 }
 
-// Once ranging is initiated (given desired units for ret_value), the Grove
-// will stop responding to the I2C bus until it is complete.
-void Grove :: initRanging(int8_t units) {
-	writeI2CByte(COMMAND_REG, units);
+// Changes the device's address
+// save should be an 'S' or 'N' char
+void changeAddr(int8_t newAddr, char save) {
+	writeI2CByte(CHG_ADDR_REG, newAddr);
+	writeI2CByte(CHG_ADDR_REG, save);	
+}
+
+// Sets Motor 1's rotation direction (1/2) and speed (0-255)
+void setM1Speed(int8_t rot, int8_t speed) {
+	writeI2CByte(M1_SPEED, rot);
+	writeI2CByte(M1_SPEED, speed);
+}
+
+// Sets Motor 2's rotation direction (1/2) and speed (0-255)
+void setM2Speed(int8_t rot, int8_t speed) {
+	writeI2CByte(M2_SPEED, rot);
+	writeI2CByte(M2_SPEED, speed);
 }
 
 int8_t Grove :: readI2CByte(int8_t addr) {
@@ -55,7 +64,6 @@ int8_t Grove :: readI2CByte(int8_t addr) {
 	}
 	return (int8_t)0;
 }
-
 
 bool Grove :: writeI2CByte(int8_t regAddr, int8_t value) {
 	char buffer[2];

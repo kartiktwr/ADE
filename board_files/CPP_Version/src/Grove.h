@@ -5,8 +5,8 @@
  *      Author: Mike Lewis (mikelewis@alphalem.com)
  */
 
-#ifndef Grove_H_
-#define Grove_H_
+#ifndef GROVE_H_
+#define GROVE_H_
 
 
 #include <linux/i2c.h>
@@ -20,25 +20,16 @@
 
 #define MAX_BUS 64
 
-/* Grove CONSTANTS */
+/* GROVE CONSTANTS */
+#define DEFAULT_ADDR 0x28
 
-// Write mode
-#define COMMAND_REG 0x00
-#define MAX_GAIN_REG 0x01
-#define RANGE_REG 0x02
-
-// Read mode
-#define LIGHT 0x01
-#define ECHO_1_HI 0x02
-#define ECHO_1_LO 0x03
-#define ECHO_2_HI 0x04
-#define ECHO_2_LO 0x05
-#define ECHO_3_HI 0x06
-#define ECHO_3_LO 0x07
-#define ECHO_4_HI 0x08
-#define ECHO_4_LO 0x09
-
-#define DEFAULT_ADDR 0xE0
+// Registers
+#define PWM_REG			0x28
+#define FREQ_REG		0x84
+#define CHG_ADDR_REG	0x83
+#define CHANNEL_SET_REG	0xAA
+#define M1_SPEED		0xA1
+#define M2_SPEED		0xA5
 
 class Grove {
 
@@ -46,16 +37,20 @@ private:
 	int8_t I2CAddress;
 	int I2CBus;
 	SlaveDevice slave;
-	initRanging(int8_t units);
 	int8_t readI2CByte(int8_t);
 	bool writeI2CByte(int8_t, int8_t);
 
 public:
 	Grove(int);
 	Grove(int, int8_t);
-	int8_t* getRange();
-	int8_t getLight();
+
+	void setPWMAB(int8_t, int8_t);
+	void setFreq(int8_t);
+	void changeAddr(int8_t, char);
+	void setM1Speed(int8_t, int8_t);
+	void setM2Speed(int8_t, int8_t);
+
 	~Grove();
 };
 
-#endif /* Grove_H_ */
+#endif /* GROVE_H_ */
