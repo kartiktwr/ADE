@@ -1,12 +1,12 @@
 /*
- * SRF08.h
+ * Grove.h
  *
  *  Created on: Dec 17, 2013
  *      Author: Mike Lewis (mikelewis@alphalem.com)
  */
 
-#ifndef SRF08_H_
-#define SRF08_H_
+#ifndef Grove_H_
+#define Grove_H_
 
 
 #include <linux/i2c.h>
@@ -20,7 +20,7 @@
 
 #define MAX_BUS 64
 
-/* SRF08 CONSTANTS */
+/* Grove CONSTANTS */
 
 // Write mode
 #define COMMAND_REG 0x00
@@ -40,7 +40,7 @@
 
 #define DEFAULT_ADDR 0xE0
 
-class SRF08 {
+class Grove {
 
 private:
 	int8_t I2CAddress;
@@ -51,11 +51,11 @@ private:
 	bool writeI2CByte(int8_t, int8_t);
 
 public:
-	SRF08(int);
-	SRF08(int, int8_t);
+	Grove(int);
+	Grove(int, int8_t);
 	int8_t* getRange();
 	int8_t getLight();
-	~SRF08();
+	~Grove();
 };
 
-#endif /* SRF08_H_ */
+#endif /* Grove_H_ */
