@@ -1,8 +1,8 @@
 /*
  * SRF08.h
  *
- *  Created on: Aug 16, 2013
- *      Author: kartik
+ *  Created on: Dec 17, 2013
+ *      Author: Mike Lewis (mikelewis@alphalem.com)
  */
 
 #ifndef SRF08_H_
@@ -20,43 +20,41 @@
 
 #define MAX_BUS 64
 
-//Servo constants
-#define SERVOMIN 157
-#define SERVOMAX 627
+/* SRF08 CONSTANTS */
 
-#define PCA9685_SUBADR1 0x2
-#define PCA9685_SUBADR2 0x3
-#define PCA9685_SUBADR3 0x4
+// Write mode
+#define COMMAND_REG 0x00
+#define MAX_GAIN_REG 0x01
+#define RANGE_REG 0x02
 
-#define PCA9685_MODE1 0x0
-#define PCA9685_PRESCALE 0xFE
+// Read mode
+#define LIGHT 0x01
+#define ECHO_1_HI 0x02
+#define ECHO_1_LO 0x03
+#define ECHO_2_HI 0x04
+#define ECHO_2_LO 0x05
+#define ECHO_3_HI 0x06
+#define ECHO_3_LO 0x07
+#define ECHO_4_HI 0x08
+#define ECHO_4_LO 0x09
 
-#define LED0_ON_L 0x6
-#define LED0_ON_H 0x7
-#define LED0_OFF_L 0x8
-#define LED0_OFF_H 0x9
+#define DEFAULT_ADDR 0xE0
 
-#define ALLLED_ON_L 0xFA
-#define ALLLED_ON_H 0xFB
-#define ALLLED_OFF_L 0xFC
-#define ALLLED_OFF_H 0xFD
-
-class SRF08{
+class SRF08 {
 
 private:
 	int8_t I2CAddress;
 	int I2CBus;
 	SlaveDevice slave;
+	initRanging(int8_t units);
 	int8_t readI2CByte(int8_t);
 	bool writeI2CByte(int8_t, int8_t);
-	void servoControllerReset();
-	int map(int, int, int, int, int);	// maps angle values from deg to pwm value
 
 public:
 	SRF08(int);
 	SRF08(int, int8_t);
-	bool initializeServoDriver(int);
-	bool setPWMValue(int8_t, int16_t);
+	int8_t* getRange();
+	int8_t getLight();
 	~SRF08();
 };
 
