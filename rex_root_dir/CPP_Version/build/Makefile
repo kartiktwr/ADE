@@ -1,8 +1,17 @@
 
 CC = g++
 
-default: send receive  
+default: sensor  
 	@echo Executable located in bin
+
+sensor: Sensor.o Serial.o master.o i2c-common.o MMA7455.o
+	$(CC) Sensor.o Serial.o master.o i2c-common.o MMA7455.o -o ../bin/sensor
+
+Sensor.o: ../src/Sensor.cpp
+	$(CC) -c ../src/Sensor.cpp
+
+MMA7455.o: ../src/MMA7455.cpp
+	$(CC) -c ../src/MMA7455.cpp
 
 send: message_send.o rangeFinder.o SlaveDevice.o
 	$(CC) message_send.o rangeFinder.o SlaveDevice.o -o ../bin/message_send
@@ -18,8 +27,8 @@ all: angstrom_avoid_obj key_input
 
 sample: sample_pub sample_sub
 
-sample_pub: sample_pub.o master.o pubsub.o Serial.o
-	$(CC) sample_pub.o master.o pubsub.o Serial.o -o ../bin/sample_pub
+sample_pub: sample_pub.o master.o pubsub.o Serial.o SRF08.o SlaveDevice.o
+	$(CC) sample_pub.o master.o pubsub.o Serial.o SRF08.o SlaveDevice.o -o ../bin/sample_pub
 
 sample_sub: sample_sub.o master.o pubsub.o Serial.o
 	$(CC) sample_sub.o master.o pubsub.o Serial.o -o ../bin/sample_sub
@@ -30,6 +39,8 @@ sample_sub.o: ../src/sample_sub.cpp
 sample_pub.o: ../src/sample_pub.cpp
 	$(CC) -c ../src/sample_pub.cpp
 
+SRF08.o: ../src/SRF08.cpp
+	$(CC) -c ../src/SRF08.cpp
 master.o: ../src/master.cpp
 	$(CC) -c ../src/master.cpp
 
@@ -72,8 +83,8 @@ AdaFruitServoDriver.o: ../src/AdaFruitServoDriver.cpp ../src/AdaFruitServoDriver
 Matrix.o: ../src/Matrix.cpp ../src/Matrix.h
 	$(CC) -c ../src/Matrix.cpp
 
-SlaveDevice.o: ../src/SlaveDevice.cpp ../src/SlaveDevice.h
-	$(CC) -c ../src/SlaveDevice.cpp
+i2c-common.o: ../src/i2c-common.cpp
+	$(CC) -c ../src/i2c-common.cpp
 
 clean:
 	$(RM) *.o *~ ../bin/*
